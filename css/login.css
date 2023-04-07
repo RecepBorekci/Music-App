@@ -1,0 +1,15 @@
+.formbox-sign-up {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.sign-up-button {
+    margin-top: 10px;
+}
+
+.field-group {
+    padding: 10px;
+}
+
