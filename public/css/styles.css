@@ -1,0 +1,23 @@
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+.bg-body-tertiary {
+  background-color: #0f0027 !important;
+}
+
+.brand-icon {
+  height: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.navbar-brand {
+  color: white;
+  font-weight: 900;
+  font-size: 2.5rem;
+  font-family: "Marck Script", cursive;
+  /*font-family: "Great Vibes", cursive; NO*/
+  /*font-family: "Oooh Baby", cursive MAYBE 2;*/
+  /* font-family: "Pacifico", cursive MAYBE 3; */
+  /* font-family: "Sacramento", cursive; NO*/
+}
