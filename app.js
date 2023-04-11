@@ -10,13 +10,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.render("index");
+  res.render("index.ejs");
 });
 app.get("/playlist", function (req, res) {
-  res.render("playlist");
+  res.render("playlist.ejs");
 });
 app.get("/profile", function (req, res) {
-  res.render("profile");
+  res.render("profile.ejs");
 });
 
 app.listen(3000, function () {
