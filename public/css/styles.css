@@ -109,3 +109,15 @@ body {
 .play-button:hover {
   background-color: #390a85;
 }
+
+.play-button:hover .fa-play {
+  font-size: 2.2rem;
+}
+
+.button-previous:hover .fa-backward {
+  font-size: 1.65rem;
+}
+
+.button-next:hover .fa-forward {
+  font-size: 1.65rem;
+}
