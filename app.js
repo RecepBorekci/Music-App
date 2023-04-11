@@ -9,6 +9,12 @@ app.use(express.static("public"));
 app.get("/", function (req, res) {
   res.render("index");
 });
+app.get("/playlist", function (req, res) {
+  res.render("playlist");
+});
+app.get("/profile", function (req, res) {
+  res.render("profile");
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");

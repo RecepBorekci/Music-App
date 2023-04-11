@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <!--~ Bootstrap Link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <!--~ Google Fonts Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dr+Sugiyama&family=Great+Vibes&family=Marck+Script&family=Montserrat:wght@200;300;400;500&family=Oooh+Baby&family=Pacifico&family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
+    <!--~ Font Awesome Link -->
+    <script
+      src="https://kit.fontawesome.com/dc16633a5b.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--~ CSS Link -->
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-dark navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand ms-4" href="/"
+          ><img class="brand-icon" src="images/icon.svg" alt="icon" /> Musix</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav ms-auto me-4 mb-2 mb-lg-0 fs-5">
+            <li class="nav-item ms-2">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="nav-link" href="/playlist">Playlists</a>
+
+            </li>
+            <li class="nav-item ms-2">
+              <a class="nav-link" href="/profile">Profile</a>
+
+            </li>
+          </ul>
+          <span class="navbar-text"> Playlist Section </span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="col-md-9">
+          <h2 style="color: #fff;">My Example Playlists</h2>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card" style="background-color: #e8d7f2;">
+                <img src="https://static.vecteezy.com/system/resources/previews/001/208/099/non_2x/rock-roll-png.png" width="100" height="200" alt="Playlist 1" class="card-img-top" style="padding: 10px; margin-right: 20px;" />
+                <hr style="border-top: 2px solid #3f0b93;">
+                <div class="card-body">
+                  <h5 class="card-title">Rock Musics</h5>
+                  <p class="card-text">56 songs - Example Playlist 1</p>
+                  <a href="/playlist/1" class="btn btn-primary">View Playlist</a>
+                  <a href="#" class="btn btn-primary" style="margin-left: 96px;"><i class="fas fa-play"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card" style="background-color: #e8d7f2;">
+                <img src="https://www.pngall.com/wp-content/uploads/9/Pop-Music-Logo-Transparent.png" width="100" height="200" alt="Playlist 2" class="card-img-top" style="padding: 10px; margin-right: 20px;"/>
+                <hr style="border-top: 2px solid #1a033f;">
+                <div class="card-body">
+                  <h5 class="card-title">Pop Musics</h5>
+                  <p class="card-text">33 songs - Example Playlist 2</p>
+                  <a href="/playlist/2" class="btn btn-primary">View Playlist</a>
+                  <a href="#" class="btn btn-primary" style="margin-left: 96px;"><i class="fas fa-play"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card" style="background-color: #e8d7f2;">
+                <img src="https://freepngimg.com/thumb/rap/35387-3-rap-transparent-thumb.png" width="100" height="200" alt="Playlist 3" class="card-img-top" style="padding: 10px; margin-right: 20px;" />
+                <hr style="border-top: 2px solid #0f0027;">
+                <div class="card-body">
+                  <h5 class="card-title">Rap Musics</h5>
+                  <p class="card-text">27 songs - Example Playlist 3</p>
+                  <a href="/playlist/3" class="btn btn-primary">View Playlist</a>
+                  <a href="#" class="btn btn-primary" style="margin-left: 96px;"><i class="fas fa-play"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <div class="controls">
+        <div class="control-buttons">
+          <div class="button-previous">
+            <i class="fa-solid fa-backward"></i>
+          </div>
+          <div class="play-button">
+            <i class="fa-solid fa-play"></i>
+          </div>
+          <div class="button-next">
+            <i class="fa-solid fa-forward"></i>
+          </div>
+        </div>
+      </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
