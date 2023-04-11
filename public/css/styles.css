@@ -12,36 +12,12 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.button-previous {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3f0b93;
-  border-top-left-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-  margin-right: -10px;
-  height: 40%;
-  width: 17%;
-}
-
-.button-previous:hover {
-  background-color: #470da4;
-}
-
-.button-next {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3f0b93;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  margin-left: -10px;
-  height: 40%;
-  width: 17%;
-}
-
-.button-next:hover {
-  background-color: #470da4;
+.controls-container {
+  height: 20vh;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  /* bottom: 0px; */
 }
 
 .controls {
@@ -49,10 +25,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20%;
+  height: 100%;
   width: 100%;
-  position: absolute;
-  bottom: 0px;
+  /* position: relative; */
 }
 
 .control-buttons {
@@ -60,39 +35,49 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 25%;
-  height: 60%;
+  width: 35vw;
+  height: 70%;
   border-radius: 4rem;
 }
 
-.fa-forward {
-  color: white;
-  font-size: 1.5rem;
+.button-previous {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3f0b93;
+  border-top-left-radius: 5rem;
+  border-bottom-left-radius: 5rem;
+  margin-right: -10px;
+  height: 55%;
+  width: 17%;
 }
 
-.fa-backward {
-  color: white;
-  font-size: 1.5rem;
+.button-previous:hover {
+  background-color: #470da4;
 }
 
-.fa-play {
-  color: white;
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  font-size: 2rem;
-  z-index: 2;
+.button-previous:hover .fa-backward {
+  font-size: 1.65rem;
 }
 
-.navbar-brand {
-  color: white;
-  font-weight: 900;
-  font-size: 2.5rem;
-  font-family: "Marck Script", cursive;
-  /*font-family: "Great Vibes", cursive; NO*/
-  /*font-family: "Oooh Baby", cursive MAYBE 2;*/
-  /* font-family: "Pacifico", cursive MAYBE 3; */
-  /* font-family: "Sacramento", cursive; NO*/
+.button-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3f0b93;
+  border-top-right-radius: 5rem;
+  border-bottom-right-radius: 5rem;
+  margin-left: -10px;
+  height: 55%;
+  width: 17%;
+}
+
+.button-next:hover {
+  background-color: #470da4;
+}
+
+.button-next:hover .fa-forward {
+  font-size: 1.65rem;
 }
 
 .play-button {
@@ -101,8 +86,8 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  height: 75%;
-  width: 19%;
+  height: 10vh;
+  width: 10vh;
   z-index: 1;
 }
 
@@ -114,10 +99,125 @@ body {
   font-size: 2.2rem;
 }
 
-.button-previous:hover .fa-backward {
-  font-size: 1.65rem;
+/*& PHONE SIZE  */
+
+@media (min-width: 320px) {
+  .controls-container {
+    height: 13vh;
+  }
+
+  .control-buttons {
+    width: 50vw;
+  }
+
+  .button-previous {
+    width: 23%;
+  }
+
+  .button-next {
+    width: 23%;
+  }
+
+  .fa-forward {
+    color: white;
+    font-size: 1.3rem;
+  }
+
+  .fa-backward {
+    color: white;
+    font-size: 1.3rem;
+  }
+
+  .fa-play {
+    color: white;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    z-index: 2;
+  }
 }
 
-.button-next:hover .fa-forward {
-  font-size: 1.65rem;
+/*~ TABLET SIZE  */
+
+@media (min-width: 481px) {
+  .controls-container {
+    height: 13vh;
+  }
+
+  .control-buttons {
+    width: 40vw;
+  }
+
+  .fa-forward {
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .fa-backward {
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .fa-play {
+    color: white;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    z-index: 2;
+  }
 }
+
+/*^ DESKTOP SIZE  */
+
+@media (min-width: 901px) {
+  .controls-container {
+    height: 13vh;
+  }
+
+  .control-buttons {
+    width: 25vw;
+  }
+
+  .fa-forward {
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .fa-backward {
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .fa-play {
+    color: white;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    z-index: 2;
+  }
+}
+
+.navbar {
+  padding: 0;
+}
+
+.navbar-brand {
+  padding: 0;
+  color: white;
+  font-weight: 900;
+  font-size: 2.5rem;
+  font-family: "Marck Script", cursive;
+  /*font-family: "Great Vibes", cursive; NO*/
+  /*font-family: "Oooh Baby", cursive MAYBE 2;*/
+  /* font-family: "Pacifico", cursive MAYBE 3; */
+  /* font-family: "Sacramento", cursive; NO*/
+}
+
+/* .main-part {
+  display: flex;
+  background-color: aliceblue;
+  height: max-content;
+} */
