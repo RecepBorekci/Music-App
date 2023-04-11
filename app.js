@@ -7,7 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.render("index");
+  res.render("../index");
 });
 app.get("/playlist", function (req, res) {
   res.render("playlist");
