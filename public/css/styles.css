@@ -1,5 +1,6 @@
 body {
   font-family: "Montserrat", sans-serif;
+  background-color: #1a033f;
 }
 
 .bg-body-tertiary {
@@ -11,6 +12,78 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.button-previous {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3f0b93;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  margin-right: -10px;
+  height: 40%;
+  width: 17%;
+}
+
+.button-previous:hover {
+  background-color: #470da4;
+}
+
+.button-next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3f0b93;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  margin-left: -10px;
+  height: 40%;
+  width: 17%;
+}
+
+.button-next:hover {
+  background-color: #470da4;
+}
+
+.controls {
+  background-color: #0b001b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+}
+
+.control-buttons {
+  background-color: #27055e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  height: 60%;
+  border-radius: 4rem;
+}
+
+.fa-forward {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.fa-backward {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.fa-play {
+  color: white;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  z-index: 2;
+}
+
 .navbar-brand {
   color: white;
   font-weight: 900;
@@ -20,4 +93,19 @@ body {
   /*font-family: "Oooh Baby", cursive MAYBE 2;*/
   /* font-family: "Pacifico", cursive MAYBE 3; */
   /* font-family: "Sacramento", cursive; NO*/
+}
+
+.play-button {
+  background-color: #300772;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  height: 75%;
+  width: 19%;
+  z-index: 1;
+}
+
+.play-button:hover {
+  background-color: #390a85;
 }
