@@ -11,7 +11,7 @@ app.use(express.static(__dirname + "/public"));
 //app.use(express.static("public"));
 
 app.get("/", function (req, res) {
-  res.render("../index.ejs");
+  res.render("index.ejs");
 });
 app.get("/playlist", function (req, res) {
   res.render("playlist.ejs");
