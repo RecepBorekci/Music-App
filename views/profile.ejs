@@ -13,7 +13,7 @@
     </div>
   </div>
 </nav>
-<div class="container mt-5">
+<div class="container mt-5 profile-container">
   <table cellspacing="30">
     <tr>
       <td style="padding: 30px; margin-right: 60px">
@@ -37,5 +37,23 @@
     </tr>
   </table>
 </div>
+<div class="logout-container">
+  <button onclick="logout()" class="btn btn-primary btn-lg logout-button">LOG OUT</button>
+</div>
+
+<script>
+  function logout() {
+  const url = "https://www.spotify.com/logout/";
+  const spotifyLogoutWindow = window.open(
+    url,
+    "Spotify Logout",
+    "width=700,height=500,top=40,left=40"
+  );
+  setTimeout(() => {
+    spotifyLogoutWindow.close();
+    window.location.href = "http://localhost:3000/login";
+  }, 2000);
+}
+</script>
 
 <%- include("partials/footer") %>

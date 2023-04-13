@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 //app.use(express.static("public"));
 
-app.get("/callback", function (req, res) {
+app.get("/", function (req, res) {
   res.render("index.ejs");
 });
 app.get("/playlist", function (req, res) {

@@ -221,3 +221,36 @@ body {
   background-color: aliceblue;
   height: max-content;
 } */
+
+.logout-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 10vh;
+}
+
+.btn-outline-primary {
+  border-color: #e96fff;
+  color: #e96fff;
+}
+
+.btn-outline-primary:hover {
+  border-color: #d55eff;
+  background-color: #d55eff;
+}
+
+.btn-primary {
+  background-color: #e96fff;
+  border-color: #e96fff;
+}
+
+.btn-primary:hover {
+  background-color: #d55eff;
+  border-color: #d55eff;
+}
+
+.logout-button {
+  padding: 0.7rem 1.7rem;
+  font-weight: 900;
+}
