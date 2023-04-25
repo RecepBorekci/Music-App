@@ -91,6 +91,25 @@ app.get("/refresh_token", (req, res) => {
     });
 });
 
+app.get("/reallogin", function(req, res) {
+  res.render("login.ejs");
+});
+
+// Possible login functionality. Not yet implemented.
+
+// app.post("/reallogin", function(req, res) {
+
+//     var email = req.body.email;
+//     var password = req.body.password;
+
+//     console.log("The email is: " + email);
+//     console.log("The password is: " + password);
+
+//     res.redirect("/");
+
+// });
+
+
 const client_id = "30d5140203ce42c88337910fc2b6aef1";
 const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
 var redirect_uri = "http://localhost:3000/callback";

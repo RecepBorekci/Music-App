@@ -24,7 +24,7 @@ registerSubmitBtn.addEventListener('click', (event) => {
         .then((userCredential) => {
           const user = userCredential.user;
           // TODO: Enter to the main screen.
-            alert(user.email);
+          window.location.href = "/";
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -51,8 +51,8 @@ loginSubmitBtn.addEventListener('click', (event) => {
     auth.signInWithEmailAndPassword(loginEmail, loginPassword)
         .then((userCredential) => {
           const user = userCredential.user;
-          alert(user.email);
           // TODO: Enter to the main screen.
+          window.location.href = "/";
         })
         .catch((error) => {
           const errorCode = error.code;
