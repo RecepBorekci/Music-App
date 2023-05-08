@@ -43,21 +43,16 @@
 
 <script>
   function logout() {
-
-    window.location.href = "/reallogin";
-
-  // Spotify logout
-
-  // const url = "https://www.spotify.com/logout/";
-  // const spotifyLogoutWindow = window.open(
-  //   url,
-  //   "Spotify Logout",
-  //   "width=700,height=500,top=40,left=40"
-  // );
-  // setTimeout(() => {
-  //   spotifyLogoutWindow.close();
-  //   window.location.href = "http://localhost:3000/login";
-  // }, 2000);
+  const url = "https://www.spotify.com/logout/";
+  const spotifyLogoutWindow = window.open(
+    url,
+    "Spotify Logout",
+    "width=700,height=500,top=40,left=40"
+  );
+  setTimeout(() => {
+    spotifyLogoutWindow.close();
+    window.location.href = "/login";
+  }, 2000);
 }
 </script>
 
