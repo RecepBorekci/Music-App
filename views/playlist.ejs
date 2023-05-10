@@ -12,76 +12,29 @@
     </div>
   </div>
 </nav>
-<div class="container mt-5">
-  <div class="col-md-9">
-    <h2 style="color: #fff">My Example Playlists</h2>
+<div class="playlists-container">
+    <h2 style="color: #fff">Your Playlists</h2>
     <br />
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card" style="background-color: #e8d7f2">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/001/208/099/non_2x/rock-roll-png.png"
-            width="100"
-            height="200"
-            alt="Playlist 1"
-            class="card-img-top"
-            style="padding: 10px; margin-right: 20px"
-          />
-          <hr style="border-top: 2px solid #3f0b93" />
-          <div class="card-body">
-            <h5 class="card-title">Rock Musics</h5>
-            <p class="card-text">56 songs - Example Playlist 1</p>
-            <a href="/playlist/1" class="btn btn-primary">View Playlist</a>
-            <a href="#" class="btn btn-primary" style="margin-left: 96px"
-              ><i class="fas fa-play"></i
-            ></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card" style="background-color: #e8d7f2">
-          <img
-            src="https://www.pngall.com/wp-content/uploads/9/Pop-Music-Logo-Transparent.png"
-            width="100"
-            height="200"
-            alt="Playlist 2"
-            class="card-img-top"
-            style="padding: 10px; margin-right: 20px"
-          />
-          <hr style="border-top: 2px solid #1a033f" />
-          <div class="card-body">
-            <h5 class="card-title">Pop Musics</h5>
-            <p class="card-text">33 songs - Example Playlist 2</p>
-            <a href="/playlist/2" class="btn btn-primary">View Playlist</a>
-            <a href="#" class="btn btn-primary" style="margin-left: 96px"
-              ><i class="fas fa-play"></i
-            ></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card" style="background-color: #e8d7f2">
-          <img
-            src="https://freepngimg.com/thumb/rap/35387-3-rap-transparent-thumb.png"
-            width="100"
-            height="200"
-            alt="Playlist 3"
-            class="card-img-top"
-            style="padding: 10px; margin-right: 20px"
-          />
-          <hr style="border-top: 2px solid #0f0027" />
-          <div class="card-body">
-            <h5 class="card-title">Rap Musics</h5>
-            <p class="card-text">27 songs - Example Playlist 3</p>
-            <a href="/playlist/3" class="btn btn-primary">View Playlist</a>
-            <a href="#" class="btn btn-primary" style="margin-left: 96px"
-              ><i class="fas fa-play"></i
-            ></a>
-          </div>
-        </div>
-      </div>
+    <div class="playlist-items row">
+      <% try { %>
+        <% for(var i = 0; i < items.length; i++) { %>
+          <div class="playlist-item">
+            <img
+              src=<%= items[i].images[0].url %>
+              alt="playlists"
+              class="playlist-item-image"
+            />
+            <div class="playlist-item-body">
+              <h1 class="playlist-item-title"><%= items[i].name %></h1>
+              <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
+            </div>
+          </div>  
+      <% } %>   
+      <% } catch (error) { %>
+        <% console.log(error); %>
+      <% } %>
+      
     </div>
-  </div>
 </div>
 
 <%- include("partials/footer") %>

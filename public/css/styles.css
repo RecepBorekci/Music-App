@@ -76,33 +76,32 @@ body {
 }
 
 .logo-button {
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
-	border-radius:28px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#666666;
-	font-family:Arial;
-	font-size:20px;
-	font-weight:bold;
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+  background-color: #ffffff;
+  border-radius: 28px;
+  border: 1px solid #dcdcdc;
+  display: inline-block;
+  cursor: pointer;
+  color: #666666;
+  font-family: Arial;
+  font-size: 20px;
+  font-weight: bold;
   margin: 10px;
-	padding:11px 35px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+  padding: 11px 35px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffffff;
 }
 .logo-button:hover {
-	background:linear-gradient(to bottom, #d6d6d6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
+  background: linear-gradient(to bottom, #d6d6d6 5%, #ffffff 100%);
+  background-color: #f6f6f6;
 }
 .logo-button:active {
-	position:relative;
-	top:1px;
+  position: relative;
+  top: 1px;
 }
 
-/* AND OTHERS */
-
+/** STYLES */
 
 .controls-container {
   height: 20vh;
@@ -189,6 +188,54 @@ body {
 
 .play-button:hover .fa-play {
   font-size: 2.2rem;
+}
+
+.playlists-container {
+  margin-top: 7rem;
+  margin-bottom: 15rem;
+  width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.playlist-items {
+  display: flex;
+  justify-content: start;
+}
+
+.playlist-item {
+  background-color: #3e049b;
+  border-radius: 1rem;
+  width: 12rem;
+  height: 20rem;
+  padding: 0;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.playlist-item-image {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  display: block;
+  width: 100%;
+}
+
+.playlist-item-body {
+  color: rgba(255, 255, 255, 0.852);
+  padding-top: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.playlist-item-title {
+  font-size: 1.1rem;
+}
+
+.playlist-item-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.598);
 }
 
 /*& PHONE SIZE  */
@@ -323,23 +370,23 @@ body {
 }
 
 .btn-outline-primary {
-  border-color: #e96fff;
-  color: #e96fff;
+  border-color: #bd104c;
+  color: #bd104c;
 }
 
 .btn-outline-primary:hover {
-  border-color: #d55eff;
-  background-color: #d55eff;
+  border-color: #a5073e;
+  background-color: #a5073e;
 }
 
 .btn-primary {
-  background-color: #e96fff;
-  border-color: #e96fff;
+  background-color: #bd104c;
+  border-color: #bd104c;
 }
 
 .btn-primary:hover {
-  background-color: #d55eff;
-  border-color: #d55eff;
+  background-color: #a5073e;
+  border-color: #a5073e;
 }
 
 .logout-button {

@@ -18,20 +18,18 @@
     <tr>
       <td style="padding: 30px; margin-right: 60px">
         <img
-          src="https://talhakarakoyunlu.github.io/cv/images/talha%20profile%20picture.png"
-          alt="Talha's Profile Picture"
+        class="rounded-circle"
+          src=<%= profilePicture %>
+          alt="Profile Picture"
           width="250"
           height="250"
         />
       </td>
       <td style="padding: 30px">
-        <h1 style="color: #fff">Talha Bahadır Karakoyunlu</h1>
+        <h1 style="color: #fff"><%= username %></h1>
         <em>
-          <p style="color: #e0e0e0">Administrator Profile Example</p>
-          <p style="color: #e0e0e0">Since: April 11</p>
-          <a href="/edit-profile" class="btn btn-outline-primary"
-            >Edit Profile</a
-          >
+          <p style="color: #e0e0e0"><%= email %></p>
+          <p style="color: #e0e0e0"><%= followers %> followers</p>
         </em>
       </td>
     </tr>
