@@ -18,17 +18,20 @@
     <div class="playlist-items row">
       <% try { %>
         <% for(var i = 0; i < items.length; i++) { %>
-          <div class="playlist-item">
-            <img
-              src=<%= items[i].images[0].url %>
-              alt="playlists"
-              class="playlist-item-image"
-            />
-            <div class="playlist-item-body">
-              <h1 class="playlist-item-title"><%= items[i].name %></h1>
-              <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
-            </div>
-          </div>  
+          <a href="/playlist/<%=items[i].name%>">
+            <div class="playlist-item">
+              <img
+                src=<%= items[i].images[0].url %>
+                alt="playlists"
+                class="playlist-item-image"
+              />
+              <div class="playlist-item-body">
+                <h1 class="playlist-item-title"><%= items[i].name %></h1>
+                <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
+              </div>
+            </div>  
+          </a>
+
       <% } %>   
       <% } catch (error) { %>
         <% console.log(error); %>

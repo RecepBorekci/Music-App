@@ -12,6 +12,8 @@ app.use(express.static(__dirname + "/public"));
 
 var user = {};
 var playlists = {};
+var playlist_id="";
+var playlist_songs = {};
 const client_id = "30d5140203ce42c88337910fc2b6aef1";
 const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
 const redirect_uri = "http://localhost:3000/callback";
@@ -29,6 +31,20 @@ app.get("/playlist", function (req, res) {
     back_url = "/playlist";
     res.redirect("/login");
   }
+});
+
+app.get("/playlist_songs", function(req, res) {
+  res.render("playlists_songs");
+})
+
+app.get("/playlist/:playlist", function(req, res) {
+
+  console.log(req.params.playlist);
+
+  const code = req.query.code || null;
+  fetchPlaylistSongs(code);
+
+  res.redirect("playlist_songs");
 });
 
 app.get("/profile", function profile(req, res) {
@@ -103,6 +119,7 @@ async function fetchData(code) {
           })
           .then((response) => {
             playlists = response.data;
+            playlist_id = playlists.items[0];
             console.log(playlists.items);
           })
           .catch((error) => {
@@ -133,6 +150,51 @@ async function fetchToken(code) {
       ).toString("base64")}`,
     },
   });
+}
+
+// METHOD I'M WORKING ON.
+async function fetchPlaylistSongs(code) {
+  fetchToken(code)
+    .then((response) => {
+      if (response.status === 200) {
+        const { access_token, token_type } = response.data;
+        axios
+          .get("https://api.spotify.com/v1/me", {
+            headers: {
+              Authorization: `${token_type} ${access_token}`,
+            },
+          })
+          .then((response) => {
+            //user = `${JSON.stringify(response.data, null, 2)}`;
+            user = response.data;
+            userId = user.id;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        axios
+          .get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+            headers: {
+              Authorization: `${token_type} ${access_token}`,
+            },
+            params: {
+              limit: 50,
+            },
+          })
+          .then((response) => {
+            playlists_songs = response.data.items;
+            console.log(playlists.items);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        console.log(response);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 app.listen(3000, function () {
