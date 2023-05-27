@@ -1,0 +1,13 @@
+<%- include("partials/header") %>
+
+<div class="playlist-song">
+
+    <% playlistSongs.forEach(function(song) { %>
+        <div class="playlist-item">
+            <%= song.track.name %>
+        </div>
+        <% }) %>
+
+</div>
+
+<%- include("partials/footer") %>
