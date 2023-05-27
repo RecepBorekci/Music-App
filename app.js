@@ -12,7 +12,7 @@ app.use(express.static(__dirname + "/public"));
 
 var user = {};
 var playlists = {};
-var playlist_id="";
+var playlist_id = "";
 var playlist_songs = {};
 const client_id = "30d5140203ce42c88337910fc2b6aef1";
 const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
@@ -33,18 +33,23 @@ app.get("/playlist", function (req, res) {
   }
 });
 
-app.get("/playlist_songs", function(req, res) {
+app.get("/playlist_songs", function (req, res) {
   res.render("playlists_songs");
-})
+});
 
-app.get("/playlist/:playlist", function(req, res) {
-
-  console.log(req.params.playlist);
+app.get("/playlist/:playlist", function (req, res) {
+  const playlistId = req.params.playlist; // Retrieve the playlist ID from the URL
 
   const code = req.query.code || null;
-  fetchPlaylistSongs(code);
-
-  res.redirect("playlist_songs");
+  fetchData(code, () => {
+    // Fetch and process playlist songs
+    fetchPlaylistSongs(playlistId, () => {
+      // Render the playlist songs page with the fetched playlist songs
+      res.render("playlist_songs.ejs", {
+        playlistSongs: playlist_songs,
+      });
+    });
+  });
 });
 
 app.get("/profile", function profile(req, res) {
@@ -59,7 +64,7 @@ app.get("/profile", function profile(req, res) {
       followers: user.followers.total,
     });
   } catch (error) {
-    console.log("Cannot go to profile page. Redirecting to login page.");
+    console.log("Cannot go to the profile page. Redirecting to the login page.");
     back_url = "/profile";
     res.redirect("/login");
   }
@@ -67,7 +72,17 @@ app.get("/profile", function profile(req, res) {
 
 app.get("/callback", function (req, res) {
   const code = req.query.code || null;
-  fetchData(code);
+  fetchData(code, () => {
+    // Render the profile page with the fetched user data
+    res.render("profile.ejs", {
+      profilePicture: user.images.length !== 0
+        ? user.images[0].url
+        : "https://static8.depositphotos.com/1009634/988/v/450/depositphotos_9883921-stock-illustration-no-user-profile-picture.jpg",
+      username: user.display_name,
+      email: user.email,
+      followers: user.followers.total
+    });
+  });
   res.redirect(back_url);
 });
 
@@ -89,7 +104,7 @@ app.get("/login", function (req, res) {
   );
 });
 
-async function fetchData(code) {
+function fetchData(code, callback) {
   fetchToken(code)
     .then((response) => {
       if (response.status === 200) {
@@ -101,7 +116,6 @@ async function fetchData(code) {
             },
           })
           .then((response) => {
-            //user = `${JSON.stringify(response.data, null, 2)}`;
             user = response.data;
             userId = user.id;
           })
@@ -119,8 +133,30 @@ async function fetchData(code) {
           })
           .then((response) => {
             playlists = response.data;
-            playlist_id = playlists.items[0];
-            console.log(playlists.items);
+            playlist_id = playlists.items[0].id;
+            axios
+              .get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
+                headers: {
+                  Authorization: `${token_type} ${access_token}`,
+                },
+                params: {
+                  limit: 50,
+                },
+              })
+              .then((response) => {
+                playlist_songs = response.data.items;
+                console.log(playlists.items);
+                console.log(playlist_songs);
+
+                // Handle the playlist tracks response here
+                const playlistTracks = response.data.items;
+                console.log(playlistTracks);
+
+                callback();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -145,56 +181,28 @@ async function fetchToken(code) {
     }),
     headers: {
       "content-type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${new Buffer.from(
+      Authorization: `Basic ${Buffer.from(
         `${client_id}:${client_secret}`
       ).toString("base64")}`,
     },
   });
 }
 
-// METHOD I'M WORKING ON.
-async function fetchPlaylistSongs(code) {
-  fetchToken(code)
-    .then((response) => {
-      if (response.status === 200) {
-        const { access_token, token_type } = response.data;
-        axios
-          .get("https://api.spotify.com/v1/me", {
-            headers: {
-              Authorization: `${token_type} ${access_token}`,
-            },
-          })
-          .then((response) => {
-            //user = `${JSON.stringify(response.data, null, 2)}`;
-            user = response.data;
-            userId = user.id;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        axios
-          .get(`https://api.spotify.com/v1/playlists/${playlist_id}/tracks`, {
-            headers: {
-              Authorization: `${token_type} ${access_token}`,
-            },
-            params: {
-              limit: 50,
-            },
-          })
-          .then((response) => {
-            playlists_songs = response.data.items;
-            console.log(playlists.items);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        console.log(response);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+async function fetchPlaylistSongs(playlistId, callback) {
+  const response = await axios.get(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    {
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+      },
+      params: {
+        limit: 50,
+      },
+    }
+  );
+
+  playlist_songs = response.data.items;
+  callback();
 }
 
 app.listen(3000, function () {
