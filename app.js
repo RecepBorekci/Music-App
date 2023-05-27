@@ -16,6 +16,9 @@ const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
 const redirect_uri = "http://localhost:3000/callback";
 const stateKey = "spotify_auth_state";
 var back_url = "/";
+let access_token = "";
+let token_type = "";
+let token_response = {};
 
 var user = {};
 var playlists = {};
@@ -70,9 +73,6 @@ app.get("/callback", function (req, res) {
 
 app.get("/playlist", function (req, res) {
   try {
-    // if (playlist_id !== '' || playlist_id !== null) {
-    //   res.render("playlist.ejs", { playlistID: playlist_id, items: playlists.items });
-    // }
     res.render("playlist.ejs", { items: playlists.items });
   } catch (error) {
     back_url = "/playlist";
@@ -81,13 +81,27 @@ app.get("/playlist", function (req, res) {
 });
 
 app.get("/playlist/:playlistID", function(req, res) {
-  res.render("playlist_songs", {playlistSongs: playlist_songs})
+  var playlistID = req.params.playlistID;
+
+    // Fetch the playlist songs based on the playlistID
+    fetchPlaylistSongs(playlistID)
+    .then((playlistSongs) => {
+      res.render("playlist_songs", { playlistSongs: playlistSongs });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect("/login");
+    });
 });
 
+// Gets the data for the playlist and playlist songs
 async function fetchData(code) {
   fetchToken(code)
     .then((response) => {
       if (response.status === 200) {
+
+        token_response = response.data
+
         const { access_token, token_type } = response.data;
         axios
           .get("https://api.spotify.com/v1/me", {
@@ -121,23 +135,6 @@ async function fetchData(code) {
             console.log("THE PLAYLIST ID: " + playlist_id);
             console.log("href from playslist: " + playlist_songs_href);
             console.log(playlists.items);
-            axios
-              .get(playlist_songs_href, {
-                headers: {
-                  Authorization: `${token_type} ${access_token}`,
-                },
-                params: {
-                  limit: 50,
-                },
-              }).then((response) => {
-                  console.log("href for songs: " + response.data.href);
-
-                  playlist_songs = response.data.items;
-
-                  console.log("name of the second track: " + playlist_songs[1].track.name);
-
-                  console.log("All songs in the playlist: " + playlist_songs);
-              })
           })
           .catch((error) => {
             console.log(error);
@@ -148,6 +145,37 @@ async function fetchData(code) {
     })
     .catch((error) => {
       console.log(error);
+    });
+}
+
+// Fetch the playlist songs based on the playlistID, access_token, and token_type
+async function fetchPlaylistSongs(playlistID) {
+
+  const { access_token, token_type } = token_response;
+
+  return axios
+    .get(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+      },
+      params: {
+        limit: 50,
+      },
+    })
+    .then((response) => {
+
+      console.log("href for songs: " + response.data.href);
+
+      playlist_songs = response.data.items;
+
+      console.log("name of the second track: " + playlist_songs[1].track.name);
+
+      console.log("All songs in the playlist: " + playlist_songs);
+
+      return response.data.items;
+    })
+    .catch((error) => {
+      throw error;
     });
 }
 
