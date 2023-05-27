@@ -132,9 +132,9 @@ async function fetchData(code) {
 
             playlist_id = playlists.items[0].id;
 
-            console.log("THE PLAYLIST ID: " + playlist_id);
-            console.log("href from playslist: " + playlist_songs_href);
-            console.log(playlists.items);
+            // console.log("THE PLAYLIST ID: " + playlist_id);
+            // console.log("href from playslist: " + playlist_songs_href);
+            // console.log(playlists.items);
           })
           .catch((error) => {
             console.log(error);
@@ -164,13 +164,11 @@ async function fetchPlaylistSongs(playlistID) {
     })
     .then((response) => {
 
-      console.log("href for songs: " + response.data.href);
-
       playlist_songs = response.data.items;
 
-      console.log("name of the second track: " + playlist_songs[1].track.name);
-
-      console.log("All songs in the playlist: " + playlist_songs);
+      // console.log("href for songs: " + response.data.href);
+      // console.log("name of the second track: " + playlist_songs[1].track.name);
+      // console.log("All songs in the playlist: " + playlist_songs);
 
       return response.data.items;
     })
