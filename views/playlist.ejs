@@ -18,8 +18,8 @@
     <div class="playlist-items row">
       <% try { %>
         <% for(var i = 0; i < items.length; i++) { %>
+          <div class="playlist-item">
           <a href="/playlist/<%=items[i].id%>">
-            <div class="playlist-item">
               <img
                 src=<%= items[i].images[0].url %>
                 alt="playlists"
@@ -29,8 +29,9 @@
                 <h1 class="playlist-item-title"><%= items[i].name %></h1>
                 <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
               </div>
-            </div>  
-          </a>
+            </a>
+          </div>  
+          
 
       <% } %>   
       <% } catch (error) { %>
