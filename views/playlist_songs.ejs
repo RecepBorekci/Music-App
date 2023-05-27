@@ -1,13 +1,33 @@
 <%- include("partials/header") %>
-
-<div class="playlist-song">
-
+<li class="nav-item ms-2">
+    <a class="nav-link" href="/">Home</a>
+  </li>
+  <li class="nav-item ms-2">
+    <a class="nav-link active" aria-current="page" href="/playlist">Playlists</a>
+  </li>
+  <li class="nav-item ms-2">
+    <a class="nav-link" href="/profile">Profile</a>
+  </li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="song-container">
     <% playlistSongs.forEach(function(song) { %>
-        <div class="playlist-item">
-            <%= song.track.name %>
+        <div class="song-item">
+            <img src="<%=song.track.album.images[0].url%>" alt="Song Image" class="song-item-image">
+            <div class="song-name">
+                <%= song.track.name %>
+            </div>
+            <div class="song-artist-name">
+                <%= song.track.artists[0].name %>
+            </div>
         </div>
         <% }) %>
 
 </div>
+
+
+
 
 <%- include("partials/footer") %>
