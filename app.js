@@ -201,8 +201,13 @@ async function fetchPlaylistSongs(playlistId, callback) {
     }
   );
 
-  playlist_songs = response.data.items;
-  callback();
+  if (playlistId === response.data.id) {
+    playlist_songs = response.data.items;
+    callback();
+  } else {
+    console.log("IDs do not match.");
+  }
+  
 }
 
 app.listen(3000, function () {
