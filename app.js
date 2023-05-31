@@ -287,9 +287,8 @@ async function playPlaylistSongs(playlist_uri) {
   const data = {
     "context_uri": playlist_uri,
     "offset": {
-        "position": 5
+        "position": 0
     },
-    "position_ms": 0
   };
 
   return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
