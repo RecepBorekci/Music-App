@@ -1,3 +1,8 @@
+// TODO: Implement removing items from a playlist.
+// TODO: Implement pausing and stopping playback.
+// TODO: Implement skip to next song.
+// TODO: Implement skip to previous song.
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const querystring = require("node:querystring");
