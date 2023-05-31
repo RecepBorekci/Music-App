@@ -85,10 +85,9 @@ app.post("/playlist", function (req, res) {
 
   var playlistUri = req.body.playlist_uri;
 
-  console.log(playlistUri);
+  console.log("URI of the playlist: " + playlistUri);
 
   playPlaylistSongs(playlistUri);
-
 
 });
 
@@ -106,8 +105,6 @@ app.get("/playlist/:playlistID", function(req, res) {
       res.redirect("/login");
     });
 
-    
-
     // songItems.forEach(function(song) {
     //   song.addEventListener("click", function() {
     //     playSong(playlist_songs[0].track.uri);
@@ -119,9 +116,9 @@ app.post("/playlist/:playlistID", function(req, res) {
   var playlistID = req.params.playlistID;
   var song_uri = req.body.playlist_song_button;
 
-  console.log(song_uri);
+  console.log("URI of the song: " + song_uri);
 
-  // getSongPlaybackState();
+  playSong(song_uri);
 
 })
 
@@ -293,6 +290,34 @@ async function playPlaylistSongs(playlist_uri) {
         "position": 5
     },
     "position_ms": 0
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+}
+
+async function playSong(song_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const data = {
+    "offset": {
+        "position": 0
+    },
+    "uris": [song_uri]
   };
 
   return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
