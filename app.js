@@ -79,6 +79,19 @@ app.get("/playlist", function (req, res) {
   }
 });
 
+app.post("/playlist", function (req, res) {
+
+  console.log("button is pressed");
+
+  var playlistUri = req.body.playlist_uri;
+
+  console.log(playlistUri);
+
+  playPlaylistSongs(playlistUri);
+
+
+});
+
 app.get("/playlist/:playlistID", function(req, res) {
   var playlistID = req.params.playlistID;
 
@@ -172,7 +185,7 @@ async function fetchData(code) {
 
             console.log("This is the uri: " + first_playlist_uri);
 
-            playSong();
+            // playSong();
 
             // console.log("THE PLAYLIST ID: " + playlist_id);
             // console.log("href from playslist: " + playlist_songs_href);
@@ -266,11 +279,7 @@ async function getDevice() {
   });
 }
 
-async function playSong() {
-
-  let device = await getDevice();
-
-  console.log(device.name);
+async function playPlaylistSongs(playlist_uri) {
 
   const { access_token, token_type } = token_response;
 
@@ -279,7 +288,7 @@ async function playSong() {
   };
 
   const data = {
-    "context_uri": "spotify:album:1xhO0GSoezdPJcSuNe1ySv",
+    "context_uri": playlist_uri,
     "offset": {
         "position": 5
     },

@@ -18,6 +18,9 @@
     <div class="playlist-items row">
       <% try { %>
         <% for(var i = 0; i < items.length; i++) { %>
+
+          <% var uri = items[i].uri; %>
+
           <div class="playlist-item">
           <a href="/playlist/<%=items[i].id%>">
               <img
@@ -28,6 +31,11 @@
               <div class="playlist-item-body">
                 <h1 class="playlist-item-title"><%= items[i].name %></h1>
                 <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
+                <form action="/playlist" method="post">
+                  <button type="submit" name="playlist_uri" value="<%=uri%>">
+                    <i class="fa-solid fa-play fa-xsm"></i>
+                  </button>
+                </form>
               </div>
             </a>
           </div>  
