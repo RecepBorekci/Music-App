@@ -32,8 +32,7 @@ app.get("/", function (req, res) {
 app.get("/login", function (req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope =
-    "user-read-private user-read-email playlist-read-private playlist-read-collaborative";
+  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing";
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
@@ -86,13 +85,50 @@ app.get("/playlist/:playlistID", function(req, res) {
     // Fetch the playlist songs based on the playlistID
     fetchPlaylistSongs(playlistID)
     .then((playlistSongs) => {
+
       res.render("playlist_songs", { playlistSongs: playlistSongs });
     })
     .catch((error) => {
       console.log(error);
       res.redirect("/login");
     });
+
+    
+
+    // songItems.forEach(function(song) {
+    //   song.addEventListener("click", function() {
+    //     playSong(playlist_songs[0].track.uri);
+    //   })
+    // })
 });
+
+app.post("/playlist/:playlistID", function(req, res) {
+  var playlistID = req.params.playlistID;
+  var song_uri = req.body.playlist_song_button;
+
+  console.log(song_uri);
+
+  // getSongPlaybackState();
+
+})
+
+async function fetchToken(code) {
+  return axios({
+    method: "post",
+    url: "https://accounts.spotify.com/api/token",
+    data: querystring.stringify({
+      grant_type: "authorization_code",
+      code: code,
+      redirect_uri: redirect_uri,
+    }),
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${new Buffer.from(
+        `${client_id}:${client_secret}`
+      ).toString("base64")}`,
+    },
+  });
+}
 
 // Gets the data for the playlist and playlist songs
 async function fetchData(code) {
@@ -100,9 +136,9 @@ async function fetchData(code) {
     .then((response) => {
       if (response.status === 200) {
 
-        token_response = response.data
+        token_response = response.data;
 
-        const { access_token, token_type } = response.data;
+        const { access_token, token_type } = token_response;
         axios
           .get("https://api.spotify.com/v1/me", {
             headers: {
@@ -131,6 +167,12 @@ async function fetchData(code) {
             let playlist_songs_href = response.data.items[1].tracks.href; // First playlist songs.
 
             playlist_id = playlists.items[0].id;
+
+            let first_playlist_uri = response.data.items[0].uri
+
+            console.log("This is the uri: " + first_playlist_uri);
+
+            playSong();
 
             // console.log("THE PLAYLIST ID: " + playlist_id);
             // console.log("href from playslist: " + playlist_songs_href);
@@ -177,21 +219,84 @@ async function fetchPlaylistSongs(playlistID) {
     });
 }
 
-async function fetchToken(code) {
-  return axios({
-    method: "post",
-    url: "https://accounts.spotify.com/api/token",
-    data: querystring.stringify({
-      grant_type: "authorization_code",
-      code: code,
-      redirect_uri: redirect_uri,
-    }),
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${new Buffer.from(
-        `${client_id}:${client_secret}`
-      ).toString("base64")}`,
+async function getSongPlaybackState() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/me/player`, {
+    headers: headers,
+    params: {
+      limit: 50,
     },
+  })
+  .then((response) => {
+
+  console.log(response);
+  console.log(response.is_playing);
+
+    return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function getDevice() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios.get('https://api.spotify.com/v1/me/player/devices', {
+    headers: headers
+  })
+  .then((response) => {
+    return response.data.devices[0];
+  })
+  .catch((error) => {
+    throw error;
+  });
+}
+
+async function playSong() {
+
+  let device = await getDevice();
+
+  console.log(device.name);
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const data = {
+    "context_uri": "spotify:album:1xhO0GSoezdPJcSuNe1ySv",
+    "offset": {
+        "position": 5
+    },
+    "position_ms": 0
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
   });
 }
 
