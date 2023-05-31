@@ -32,8 +32,10 @@
                 <h1 class="playlist-item-title"><%= items[i].name %></h1>
                 <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
                 <form action="/playlist" method="post">
-                  <button type="submit" name="playlist_uri" value="<%=uri%>">
-                    <i class="fa-solid fa-play fa-xsm"></i>
+                  <button class="playlist-item-button" type="submit" name="playlist_uri" value="<%=uri%>">
+                    <div>
+                      <i class="fa-solid fa-play"></i>
+                    </div>
                   </button>
                 </form>
               </div>

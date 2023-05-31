@@ -17,22 +17,26 @@
 
       <% var uri = song.track.uri; %>
 
-        <div class="song-item">
-            <img src="<%=song.track.album.images[0].url%>" alt="Song Image" class="song-item-image">
-            <div class="song-name">
-                <%= song.track.name %>
-            </div>
-            <div class="song-artist-name">
-                <%= song.track.artists[0].name %>
-            </div>
-            <form action="/playlist/:playlistID" method="post">
-              <button type="submit" name="playlist_song_button" value="<%=uri%>">Play</button>
-            </form>
+      <div class="song-item">
+        <img src="<%=song.track.album.images[0].url%>" alt="Song Image" class="song-item-image">
+        <div class="song-info">
+          <div class="song-artist-name">
+            <%= song.track.artists[0].name %>
+          </div>
+          <div class="song-name">
+            <%= song.track.name %>
+          </div>
         </div>
+        <form action="/playlist/:playlistID" method="post">
+          <button class="song-item-button" type="submit" name="playlist_song_button" value="<%=uri%>">
+            <i class="fa-solid fa-play"></i>
+          </button>
+        </form>
+      </div>
+      
         <% }) %>
 
 </div>
-
 
 
 
