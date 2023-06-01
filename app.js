@@ -25,6 +25,8 @@ let access_token = "";
 let token_type = "";
 let token_response = {};
 
+var is_playing = false;
+
 var user = {};
 var playlists = {};
 let playlist_id = '';
@@ -77,14 +79,14 @@ app.get("/callback", function (req, res) {
 
 app.get("/playlist", function (req, res) {
   try {
-    res.render("playlist.ejs", { items: playlists.items });
+    res.render("playlist.ejs", { items: playlists.items, is_playing: is_playing });
   } catch (error) {
     back_url = "/playlist";
     res.redirect("/login");
   }
 });
 
-app.post("/playlist", function (req, res) {
+app.post("/playlist", async function (req, res) {
 
   console.log("button is pressed");
 
@@ -92,7 +94,13 @@ app.post("/playlist", function (req, res) {
 
   console.log("URI of the playlist: " + playlistUri);
 
-  playPlaylistSongs(playlistUri);
+  if (!is_playing) {
+    await playPlaylistSongs(playlistUri);
+    res.redirect("/playlist");
+  } else {
+    await pausePlayback();
+    res.redirect("/playlist");
+  }
 
 });
 
@@ -237,7 +245,7 @@ async function fetchPlaylistSongs(playlistID) {
     });
 }
 
-async function getSongPlaybackState() {
+async function getCurrentlyPlayingSong() {
 
   const { access_token, token_type } = token_response;
 
@@ -254,16 +262,40 @@ async function getSongPlaybackState() {
   })
   .then((response) => {
 
-  console.log(response);
-  console.log(response.is_playing);
-
-    return response.data.items;
+  console.log(response.data.item);
+    return response.data.item;
   })
   .catch((error) => {
     throw error;
   });
 
 }
+
+async function isPlaying() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/me/player`, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    is_playing = response.data.is_playing;
+    return response.data.is_playing;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
 
 async function getDevice() {
 
@@ -298,6 +330,8 @@ async function playPlaylistSongs(playlist_uri) {
         "position": 0
     },
   };
+
+  await pausePlayback();
 
   return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
     headers: headers,
@@ -340,6 +374,29 @@ async function playSong(playlist_song_uris, song_uri) {
     throw error;
   });
 }
+
+async function pausePlayback() {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  console.log("paused song");
+
+  await isPlaying();
+
+  if (is_playing) {
+    return axios.put('https://api.spotify.com/v1/me/player/pause', null, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    });
+  }
+
+}
+
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
