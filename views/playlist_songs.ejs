@@ -29,7 +29,11 @@
         </div>
         <form action="/playlist/:playlistID" method="post">
           <button class="song-item-button" type="submit" name="playlist_song_button" value="<%=uri%>">
-            <i class="fa-solid fa-play"></i>
+    <% if (is_playing) { %>
+      <i class="fa-solid fa-pause"></i>
+    <% } else { %>
+      <i class="fa-solid fa-play"></i>
+    <% } %>
           </button>
         </form>
       </div>

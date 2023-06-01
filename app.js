@@ -77,9 +77,12 @@ app.get("/callback", function (req, res) {
   res.redirect(back_url);
 });
 
-app.get("/playlist", function (req, res) {
+app.get("/playlist", async function (req, res) {
+
+  await isPlaying();
+
   try {
-    res.render("playlist.ejs", { items: playlists.items, is_playing: is_playing });
+    res.render("playlist.ejs", { items: playlists.items , is_playing: is_playing});
   } catch (error) {
     back_url = "/playlist";
     res.redirect("/login");
@@ -96,11 +99,11 @@ app.post("/playlist", async function (req, res) {
 
   if (!is_playing) {
     await playPlaylistSongs(playlistUri);
-    res.redirect("/playlist");
   } else {
     await pausePlayback();
-    res.redirect("/playlist");
   }
+
+  res.redirect("/playlist");
 
 });
 
@@ -331,20 +334,21 @@ async function playPlaylistSongs(playlist_uri) {
     },
   };
 
-  await pausePlayback();
+  if (!is_playing) {
+    return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+  }
 
-  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
-    headers: headers,
-    params: {
-      limit: 50,
-    },
-  })
-  .then((response) => {
-    return response.data;
-  })
-  .catch((error) => {
-    throw error;
-  });
 }
 
 async function playSong(playlist_song_uris, song_uri) {
@@ -383,8 +387,6 @@ async function pausePlayback() {
   };
 
   console.log("paused song");
-
-  await isPlaying();
 
   if (is_playing) {
     return axios.put('https://api.spotify.com/v1/me/player/pause', null, {
