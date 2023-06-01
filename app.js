@@ -103,27 +103,30 @@ app.get("/playlist/:playlistID", function(req, res) {
     fetchPlaylistSongs(playlistID)
     .then((playlistSongs) => {
 
+      playlist_songs = playlistSongs;
+
       res.render("playlist_songs", { playlistSongs: playlistSongs });
     })
     .catch((error) => {
       console.log(error);
       res.redirect("/login");
     });
-
-    // songItems.forEach(function(song) {
-    //   song.addEventListener("click", function() {
-    //     playSong(playlist_songs[0].track.uri);
-    //   })
-    // })
+    
 });
 
 app.post("/playlist/:playlistID", function(req, res) {
   var playlistID = req.params.playlistID;
   var song_uri = req.body.playlist_song_button;
 
-  console.log("URI of the song: " + song_uri);
+  if (playlist_songs) {
 
-  playSong(song_uri);
+    const song_uris = playlist_songs.map((song) => song.track.uri);
+
+    console.log("All URIs of the songs:", song_uris);
+    console.log("URI of the song:", song_uri);
+
+    playSong(song_uris, song_uri);
+  }
 
 })
 
@@ -310,7 +313,7 @@ async function playPlaylistSongs(playlist_uri) {
   });
 }
 
-async function playSong(song_uri) {
+async function playSong(playlist_song_uris, song_uri) {
   const { access_token, token_type } = token_response;
 
   const headers = {
@@ -319,9 +322,9 @@ async function playSong(song_uri) {
 
   const data = {
     "offset": {
-        "position": 0
+      "uri": song_uri
     },
-    "uris": [song_uri]
+    "uris": playlist_song_uris
   };
 
   return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
