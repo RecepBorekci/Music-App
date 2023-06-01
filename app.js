@@ -107,6 +107,7 @@ app.post("/playlist", async function (req, res) {
 
 });
 
+// BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an error.
 app.get("/playlist/:playlistID", async function(req, res) {
   var playlistID = req.params.playlistID;
 
