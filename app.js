@@ -107,8 +107,10 @@ app.post("/playlist", async function (req, res) {
 
 });
 
-app.get("/playlist/:playlistID", function(req, res) {
+app.get("/playlist/:playlistID", async function(req, res) {
   var playlistID = req.params.playlistID;
+
+  await isPlaying();
 
     // Fetch the playlist songs based on the playlistID
     fetchPlaylistSongs(playlistID)
@@ -116,7 +118,7 @@ app.get("/playlist/:playlistID", function(req, res) {
 
       playlist_songs = playlistSongs;
 
-      res.render("playlist_songs", { playlistSongs: playlistSongs });
+      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing});
     })
     .catch((error) => {
       console.log(error);
@@ -125,7 +127,7 @@ app.get("/playlist/:playlistID", function(req, res) {
     
 });
 
-app.post("/playlist/:playlistID", function(req, res) {
+app.post("/playlist/:playlistID", async function(req, res) {
   var playlistID = req.params.playlistID;
   var song_uri = req.body.playlist_song_button;
 
@@ -136,8 +138,14 @@ app.post("/playlist/:playlistID", function(req, res) {
     console.log("All URIs of the songs:", song_uris);
     console.log("URI of the song:", song_uri);
 
-    playSong(song_uris, song_uri);
+    if (!is_playing) {
+      await playSong(song_uris, song_uri);
+    } else {
+      await pausePlayback();
+    }
   }
+
+  res.redirect("/playlist/:playlistID");
 
 })
 
@@ -365,18 +373,20 @@ async function playSong(playlist_song_uris, song_uri) {
     "uris": playlist_song_uris
   };
 
-  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
-    headers: headers,
-    params: {
-      limit: 50,
-    },
-  })
-  .then((response) => {
-    return response.data;
-  })
-  .catch((error) => {
-    throw error;
-  });
+  if (!is_playing) {
+    return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+  }
 }
 
 async function pausePlayback() {
