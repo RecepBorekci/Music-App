@@ -28,9 +28,11 @@ let token_response = {};
 var is_playing = false;
 
 var user = {};
+let currentPlaylist = {};
 var playlists = {};
 let playlist_id = '';
 let playlist_songs = {};
+let currentPlaylistUri = '';
 
 app.get("/", function (req, res) {
   res.render("index.ejs");
@@ -82,7 +84,7 @@ app.get("/playlist", async function (req, res) {
   await isPlaying();
 
   try {
-    res.render("playlist.ejs", { items: playlists.items , is_playing: is_playing});
+    res.render("playlist.ejs", { items: playlists.items , is_playing: is_playing, playlist_id: currentPlaylist.id});
   } catch (error) {
     back_url = "/playlist";
     res.redirect("/login");
@@ -93,12 +95,17 @@ app.post("/playlist", async function (req, res) {
 
   console.log("button is pressed");
 
-  var playlistUri = req.body.playlist_uri;
+  currentPlaylistUri = req.body.playlist_uri;
+  let currentPlaylistID = req.body.playlist_id;
 
-  console.log("URI of the playlist: " + playlistUri);
+  console.log("URI of the playlist: " + currentPlaylistUri);
+  console.log("ID of the playlist: " + currentPlaylistID);
+
+  currentPlaylist = await getPlaylist(currentPlaylistID);
+  console.log("ID of the playlist: " + currentPlaylistID);
 
   if (!is_playing) {
-    await playPlaylistSongs(playlistUri);
+    await playPlaylistSongs(currentPlaylistUri);
   } else {
     await pausePlayback();
   }
@@ -107,7 +114,7 @@ app.post("/playlist", async function (req, res) {
 
 });
 
-// BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an error.
+// BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an 
 app.get("/playlist/:playlistID", async function(req, res) {
   var playlistID = req.params.playlistID;
 
@@ -228,6 +235,26 @@ async function fetchData(code) {
     });
 }
 
+async function getPlaylist(playlistID) {
+  const { access_token, token_type } = token_response;
+
+  return axios
+    .get(`https://api.spotify.com/v1/playlists/${playlistID}`, {
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+      },
+      params: {
+        limit: 50,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
 // Fetch the playlist songs based on the playlistID, access_token, and token_type
 async function fetchPlaylistSongs(playlistID) {
 
@@ -266,7 +293,7 @@ async function getCurrentlyPlayingSong() {
   };
 
   return axios
-  .get(`https://api.spotify.com/v1/me/player`, {
+  .get(`https://api.spotify.com/v1//me/player/currently-playing`, {
     headers: headers,
     params: {
       limit: 50,
@@ -274,7 +301,10 @@ async function getCurrentlyPlayingSong() {
   })
   .then((response) => {
 
-  console.log(response.data.item);
+  console.log("You are now playing a " + response.data.context.type); //Song, artist, album etc.
+
+  console.log("You are now playing " + response.data.item.name); // Name of the song.
+
     return response.data.item;
   })
   .catch((error) => {
