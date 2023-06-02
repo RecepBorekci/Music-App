@@ -29,6 +29,7 @@ var is_playing = false;
 
 var user = {};
 let currentPlaylist = {};
+let currentlyPlayingSong = {};
 var playlists = {};
 let playlist_id = '';
 let playlist_songs = {};
@@ -126,7 +127,7 @@ app.get("/playlist/:playlistID", async function(req, res) {
 
       playlist_songs = playlistSongs;
 
-      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing});
+      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing, current_song_id: currentlyPlayingSong.id});
     })
     .catch((error) => {
       console.log(error);
@@ -148,6 +149,7 @@ app.post("/playlist/:playlistID", async function(req, res) {
 
     if (!is_playing) {
       await playSong(song_uris, song_uri);
+      currentlyPlayingSong = await getCurrentlyPlayingSong();
     } else {
       await pausePlayback();
     }
@@ -293,7 +295,7 @@ async function getCurrentlyPlayingSong() {
   };
 
   return axios
-  .get(`https://api.spotify.com/v1//me/player/currently-playing`, {
+  .get(`https://api.spotify.com/v1/me/player/currently-playing`, {
     headers: headers,
     params: {
       limit: 50,
@@ -301,7 +303,9 @@ async function getCurrentlyPlayingSong() {
   })
   .then((response) => {
 
-  console.log("You are now playing a " + response.data.context.type); //Song, artist, album etc.
+    if (response.data.context) {
+      console.log("You are now playing a " + response.data.context.type); //Song, artist, album etc.
+    }
 
   console.log("You are now playing " + response.data.item.name); // Name of the song.
 
