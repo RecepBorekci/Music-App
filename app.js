@@ -25,15 +25,15 @@ let access_token = "";
 let token_type = "";
 let token_response = {};
 
-var is_playing = false;
+let is_playing = false;
 
 var user = {};
 let currentPlaylist = {};
 let currentlyPlayingSong = {};
 var playlists = {};
-let playlist_id = '';
 let playlist_songs = {};
-let currentPlaylistUri = '';
+let currentPlaylistID = '';
+let currentPlaylistURI = '';
 
 app.get("/", function (req, res) {
   res.render("index.ejs");
@@ -96,38 +96,43 @@ app.post("/playlist", async function (req, res) {
 
   console.log("button is pressed");
 
-  currentPlaylistUri = req.body.playlist_uri;
+  currentPlaylistURI = req.body.playlist_uri;
   let currentPlaylistID = req.body.playlist_id;
 
-  console.log("URI of the playlist: " + currentPlaylistUri);
+  console.log("URI of the playlist: " + currentPlaylistURI);
   console.log("ID of the playlist: " + currentPlaylistID);
 
   currentPlaylist = await getPlaylist(currentPlaylistID);
   console.log("ID of the playlist: " + currentPlaylistID);
 
   if (!is_playing) {
-    await playPlaylistSongs(currentPlaylistUri);
+    await playPlaylistSongs(currentPlaylistURI);
   } else {
     await pausePlayback();
   }
+
+  await isPlaying();
 
   res.redirect("/playlist");
 
 });
 
-// BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an 
+// BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an error. FIXED✅
 app.get("/playlist/:playlistID", async function(req, res) {
-  var playlistID = req.params.playlistID;
+  currentPlaylistID = req.params.playlistID;
+
+  console.log("This is the playlist id: " + currentPlaylistID);
 
   await isPlaying();
+  currentlyPlayingSong = await getCurrentlyPlayingSong();
 
     // Fetch the playlist songs based on the playlistID
-    fetchPlaylistSongs(playlistID)
+    fetchPlaylistSongs(currentPlaylistID)
     .then((playlistSongs) => {
 
       playlist_songs = playlistSongs;
 
-      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing, current_song_id: currentlyPlayingSong.id});
+      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing, current_song_id: currentlyPlayingSong.id, current_playlist_id: currentPlaylistID});
     })
     .catch((error) => {
       console.log(error);
@@ -137,8 +142,9 @@ app.get("/playlist/:playlistID", async function(req, res) {
 });
 
 app.post("/playlist/:playlistID", async function(req, res) {
-  var playlistID = req.params.playlistID;
   var song_uri = req.body.playlist_song_button;
+
+  await isPlaying();
 
   if (playlist_songs) {
 
@@ -149,13 +155,16 @@ app.post("/playlist/:playlistID", async function(req, res) {
 
     if (!is_playing) {
       await playSong(song_uris, song_uri);
-      currentlyPlayingSong = await getCurrentlyPlayingSong();
     } else {
       await pausePlayback();
     }
+
+    currentlyPlayingSong = await getCurrentlyPlayingSong();
   }
 
-  res.redirect("/playlist/:playlistID");
+  await isPlaying();
+
+  res.redirect("/playlist/" + currentPlaylistID);
 
 })
 
@@ -334,6 +343,9 @@ async function isPlaying() {
   })
   .then((response) => {
     is_playing = response.data.is_playing;
+
+    console.log("Is playing is: " + is_playing); 
+
     return response.data.is_playing;
   })
   .catch((error) => {
