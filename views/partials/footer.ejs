@@ -1,15 +1,17 @@
 <!-- FIX ME: Footer blocks the songs on playlist songs screen. -->
-<
-
   <div class="controls-container">
       <div class="controls">
         <div class="control-buttons">
           <div class="button-previous">
             <i class="fa-solid fa-backward"></i>
           </div>
-          <div class="play-button">
-            <i class="fa-solid fa-play"></i>
-          </div>
+          <% if (is_playing !== null) { %>
+            <% if (is_playing) { %>
+              <i class="fa-solid fa-pause"></i>
+            <% } else { %>
+              <i class="fa-solid fa-play"></i>
+            <% } %>
+          <% } %>
           <div class="button-next">
             <i class="fa-solid fa-forward"></i>
           </div>

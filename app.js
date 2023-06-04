@@ -36,7 +36,7 @@ let currentPlaylistID = '';
 let currentPlaylistURI = '';
 
 app.get("/", function (req, res) {
-  res.render("index.ejs");
+  res.render("index", { is_playing: is_playing });
 });
 
 app.get("/login", function (req, res) {
@@ -66,6 +66,7 @@ app.get("/profile", function profile(req, res) {
       username: user.display_name,
       email: user.email,
       followers: user.followers.total,
+      is_playing: is_playing
     });
   } catch (error) {
     console.log("Cannot go to profile page. Redirecting to login page.");
@@ -446,7 +447,8 @@ async function pausePlayback() {
   console.log("paused song");
 
   if (is_playing) {
-    return axios.put('https://api.spotify.com/v1/me/player/pause', null, {
+    return axios
+    .put('https://api.spotify.com/v1/me/player/pause', null, {
       headers: headers,
       params: {
         limit: 50,
