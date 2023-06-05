@@ -24,6 +24,7 @@ var back_url = "/";
 let access_token = "";
 let token_type = "";
 let token_response = {};
+let code = '';
 
 let is_playing = false;
 
@@ -76,8 +77,8 @@ app.get("/profile", function profile(req, res) {
 });
 
 app.get("/callback", function (req, res) {
-  const code = req.query.code || null;
-  fetchData(code);
+  code = req.query.code || null;
+  fetchData();
   res.redirect(back_url);
 });
 
@@ -100,6 +101,8 @@ app.post("/playlist", async function (req, res) {
   currentPlaylistURI = req.body.playlist_uri;
   let currentPlaylistID = req.body.playlist_id;
 
+  const skipButton = req.body.skipButton; // Get the value of the submitted button
+
   console.log("URI of the playlist: " + currentPlaylistURI);
   console.log("ID of the playlist: " + currentPlaylistID);
 
@@ -110,6 +113,16 @@ app.post("/playlist", async function (req, res) {
     await playPlaylistSongs(currentPlaylistURI);
   } else {
     await pausePlayback();
+  }
+
+  if (skipButton === 'previous') {
+    // Previous button was pressed, handle accordingly
+    await skipToPreviousSong();
+    await startPlayback();
+  } else if (skipButton === 'next') {
+    // Next button was pressed, handle accordingly
+    await skipToNextSong();
+    await startPlayback();
   }
 
   await isPlaying();
@@ -167,9 +180,10 @@ app.post("/playlist/:playlistID", async function(req, res) {
 
   res.redirect("/playlist/" + currentPlaylistID);
 
-})
+});
 
-async function fetchToken(code) {
+
+async function fetchToken() {
   return axios({
     method: "post",
     url: "https://accounts.spotify.com/api/token",
@@ -188,8 +202,8 @@ async function fetchToken(code) {
 }
 
 // Gets the data for the playlist and playlist songs
-async function fetchData(code) {
-  fetchToken(code)
+async function fetchData() {
+  fetchToken()
     .then((response) => {
       if (response.status === 200) {
 
@@ -437,6 +451,29 @@ async function playSong(playlist_song_uris, song_uri) {
   }
 }
 
+async function startPlayback() {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  if (!is_playing) {
+    return axios.put(`https://api.spotify.com/v1/me/player/play`, null, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+  }
+}
+
 async function pausePlayback() {
   const { access_token, token_type } = token_response;
 
@@ -456,6 +493,53 @@ async function pausePlayback() {
     });
   }
 
+}
+
+async function skipToPreviousSong() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  console.log("previous song");
+
+  if (is_playing) {
+    return axios.post('https://api.spotify.com/v1/me/player/previous', null, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+}
+
+async function skipToNextSong() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  console.log("next song");
+
+  if (is_playing) {
+    return axios.post('https://api.spotify.com/v1/me/player/next', null, {
+      headers: headers,
+      params: {
+        limit: 50,
+      },
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 }
 
 
