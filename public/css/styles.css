@@ -335,7 +335,7 @@ form {
   margin: 5rem;
 }
 
-.search-song-item, .search-artist-item,
+.search-top-result-item, .search-song-item, .search-artist-item,
 .search-album-item, .search-playlist-item,
 .search-podcast-item, .search-episode-item, .search-profile-item {
   color: white;
@@ -345,6 +345,7 @@ form {
   border-radius: 10%;
 }
 
+.search-top-result-item:last-child,
 .search-song-item:last-child,
 .search-artist-item:last-child,
 .search-album-item:last-child,
@@ -354,7 +355,6 @@ form {
 .search-profile-item:last-child {
   margin-bottom: 0;
 }
-
 
 /*& PHONE SIZE  */
 
