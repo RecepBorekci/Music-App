@@ -182,6 +182,10 @@ app.post("/playlist/:playlistID", async function(req, res) {
 
 });
 
+// Searching screen
+app.get("/search", function (req, res) {
+  res.render("search");
+});
 
 async function fetchToken() {
   return axios({
