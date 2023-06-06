@@ -3,6 +3,11 @@ body {
   background-color: #1a033f;
 }
 
+h2 {
+  color: white;
+  margin-bottom: 2rem;
+}
+
 a {
   text-decoration-color: transparent;
 }
@@ -316,6 +321,40 @@ form {
 .song-item-button::hover .fa-play{
   font-size: 1.2rem;
 }
+
+ /* search.ejs */
+ .search-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100 vh; /* Adjust the height as needed */
+}
+
+.search-item-margin {
+  margin: 5rem;
+}
+
+.search-song-item, .search-artist-item,
+.search-album-item, .search-playlist-item,
+.search-podcast-item, .search-episode-item, .search-profile-item {
+  color: white;
+  background-color: #0F0027;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 10%;
+}
+
+.search-song-item:last-child,
+.search-artist-item:last-child,
+.search-album-item:last-child,
+.search-playlist-item:last-child,
+.search-podcast-item:last-child,
+.search-episode-item:last-child,
+.search-profile-item:last-child {
+  margin-bottom: 0;
+}
+
 
 /*& PHONE SIZE  */
 

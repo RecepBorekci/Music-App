@@ -184,7 +184,7 @@ app.post("/playlist/:playlistID", async function(req, res) {
 
 // Searching screen
 app.get("/search", function (req, res) {
-  res.render("search");
+  res.render("search", {is_playing: is_playing});
 });
 
 async function fetchToken() {
