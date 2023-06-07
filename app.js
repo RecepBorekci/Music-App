@@ -14,6 +14,7 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
 const client_id = "30d5140203ce42c88337910fc2b6aef1";
@@ -35,6 +36,17 @@ var playlists = {};
 let playlist_songs = {};
 let currentPlaylistID = '';
 let currentPlaylistURI = '';
+
+// TODO: Implement finding top element, song, album or artist and send it to search.ejs
+let search_top_element = [];
+let search_songs = [];
+let search_artists = [];
+let search_albums = [];
+let search_playlists = [];
+let search_shows = [];
+let search_episodes = [];
+let search_audiobooks = [];
+
 
 app.get("/", function (req, res) {
   res.render("index", { is_playing: is_playing });
@@ -183,8 +195,20 @@ app.post("/playlist/:playlistID", async function(req, res) {
 });
 
 // Searching screen
+
+app.post("/search", async function (req, res) {
+  
+  let query = req.body.searchQuery;
+
+  console.log(query);
+
+  await search(query);
+
+  res.redirect('/search');
+});
+
 app.get("/search", function (req, res) {
-  res.render("search", {is_playing: is_playing});
+  res.render("search", {is_playing: is_playing, songs: search_songs, artists: search_artists, albums: search_albums, playlists: search_playlists, shows: search_shows, episodes: search_episodes, audiobooks: search_audiobooks});
 });
 
 async function fetchToken() {
@@ -545,6 +569,48 @@ async function skipToNextSong() {
     });
   }
 }
+
+async function search(query) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const params = {
+    q: query,
+    type: ['album', 'artist', 'playlist', 'track', 'show', 'episode', 'audiobook'].join(','),
+    limit: 5
+  };
+
+  console.log("Search a song");
+
+  try {
+    const response = await axios.get('https://api.spotify.com/v1/search', {
+      headers: headers,
+      params: params,
+    });
+
+    search_songs = response.data.tracks.items;
+    search_artists = response.data.artists.items;
+    search_albums = response.data.albums.items;
+    search_playlists = response.data.playlists.items;
+    search_shows = response.data.shows.items;
+    search_episodes = response.data.episodes.items;
+    search_audiobooks = response.data.audiobooks.items;
+
+    console.log(search_songs[0].name);
+
+    console.log(search_songs[0].popularity);
+    console.log(search_artists[0].popularity);
+    console.log(search_albums[0]);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 
 app.listen(3000, function () {

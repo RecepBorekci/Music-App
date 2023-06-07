@@ -337,12 +337,13 @@ form {
 
 .search-top-result-item, .search-song-item, .search-artist-item,
 .search-album-item, .search-playlist-item,
-.search-podcast-item, .search-episode-item, .search-profile-item {
+.search-show-item, .search-episode-item, .search-audiobook-item {
   color: white;
   background-color: #0F0027;
   padding: 2rem;
+  width: 40rem;
   margin-bottom: 2rem;
-  border-radius: 10%;
+  border-radius: 50px;
 }
 
 .search-top-result-item:last-child,
@@ -350,11 +351,18 @@ form {
 .search-artist-item:last-child,
 .search-album-item:last-child,
 .search-playlist-item:last-child,
-.search-podcast-item:last-child,
+.search-show-item:last-child,
 .search-episode-item:last-child,
-.search-profile-item:last-child {
+.search-audiobook-item:last-child {
   margin-bottom: 0;
 }
+
+.smaller-image {
+  max-width: 100px; /* Adjust the max-width value as per your requirements */
+  height: auto;
+}
+
+
 
 /*& PHONE SIZE  */
 

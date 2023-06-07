@@ -2,12 +2,13 @@
 
 <div class="search-results">
 
+  <!-- FIX ME: App currently doesn't take top result input. Implement a top result. -->
   <section id="search-top-result">
     <div class="container">
       <h2>Top Result</h2>
       <div class="search-top-result-item row align-items-center">
         <div class="col">
-          <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Song Image">
+          <img class="smaller-image" src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Song Image">
         </div>
         <div class="col">
           <p> Top result type </p>
@@ -21,7 +22,22 @@
   <section id="search-songs" class="search-item-margin">
     <div class="container">
       <h2>Songs</h2>
-      <div class="search-song-item row align-items-center">
+
+      <% songs.forEach(function (song) { %>
+
+        <div class="search-song-item row align-items-center">
+          <div class="col">
+            <img class="smaller-image" src="<%=song.album.images[0].url%>" alt="Song Image">
+          </div>
+          <div class="col">
+            <p> <%= song.name %> </p>
+            <p> <%= song.artists.name %> </p>
+          </div>
+        </div>
+
+      <% }) %>
+ 
+      <!-- <div class="search-song-item row align-items-center">
         <div class="col">
           <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Song Image">
         </div>
@@ -29,31 +45,29 @@
           <p> Song name </p>
           <p> Song artist </p>
         </div>
-      </div>
-      <div class="search-song-item row align-items-center">
-        <div class="col">
-          <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Song Image">
-        </div>
-        <div class="col">
-          <p> Song name </p>
-          <p> Song artist </p>
-        </div>
-      </div>
-      <div class="search-song-item row align-items-center">
-        <div class="col">
-          <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Song Image">
-        </div>
-        <div class="col">
-          <p> Song name </p>
-          <p> Song artist </p>
-        </div>
-      </div>
+      </div> -->
     </div>
   </section>
   
   <section id="search-artists" class="search-item-margin">
     <h2>Artists</h2>
+
+    <% artists.forEach(function (artist) { %>
+
     <div class="search-artist-item row align-items-center">
+      <div class="col">
+        <img class="smaller-image" src="<%= artist.images[0].url %>" alt="Artist Image">
+      </div>
+      <div class="col">
+        <p> <%= artist.name %> </p>
+        <p> Artist </p>
+        <p> <%= artist.followers.total %> </p>
+      </div>
+    </div>
+
+    <% }) %>
+    
+    <!-- <div class="search-artist-item row align-items-center">
       <div class="col">
         <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Artist Image">
       </div>
@@ -62,34 +76,28 @@
         <p> Artist </p>
         <p> Followers </p>
       </div>
-    </div>
-    <div class="search-artist-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Artist Image">
-      </div>
-      <div class="col">
-        <p> Artist name </p>
-        <p> Artist </p>
-        <p> Followers </p>
-      </div>
-    </div>
-    <div class="search-artist-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Artist Image">
-      </div>
-      <div class="col">
-        <p> Artist name </p>
-        <p> Artist </p>
-        <p> Followers </p>
-      </div>
-    </div>
+    </div> -->
   </section>
-  
-  
-  
+
   <section id="search-albums" class="search-item-margin">
     <h2>Albums</h2>
-    <div class="search-album-item row align-items-center">
+
+    <% albums.forEach(function (album) { %>
+
+      <div class="search-album-item row align-items-center">
+        <div class="col">
+          <img class="smaller-image" src="<%= album.images[0].url %>" alt="Album Image">
+        </div>
+        <div class="col">
+          <p> <%= album.name %> </p>
+          <p> <%= album.release_date %> </p>
+          <p> <%= album.artists.name %> </p>
+        </div>
+      </div>
+  
+      <% }) %>
+
+    <!-- <div class="search-album-item row align-items-center">
       <div class="col">
         <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Album Image">
       </div>
@@ -98,34 +106,28 @@
         <p> Album year </p>
         <p> Artist </p>
       </div>
-    </div>
-    <div class="search-album-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Album Image">
-      </div>
-      <div class="col">
-        <p> Album name </p>
-        <p> Album year </p>
-        <p> Artist </p>
-      </div>
-    </div>
-    <div class="search-album-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Album Image">
-      </div>
-      <div class="col">
-        <p> Album name </p>
-        <p> Album year </p>
-        <p> Artist </p>
-      </div>
-    </div>
+    </div> -->
+
   </section>
-  
-  
   
   <section id="search-playlists" class="search-item-margin">
     <h2>Playlists</h2>
-    <div class="search-playlist-item row align-items-center">
+
+    <% playlists.forEach(function (playlist) { %>
+
+      <div class="search-playlist-item row align-items-center">
+        <div class="col">
+          <img class="smaller-image" src="<%= playlist.images[0].url %>" alt="Playlist Image">
+        </div>
+        <div class="col">
+          <p> <%= playlist.name %> </p>
+          <p> <%= playlist.owner.display_name %> </p>
+        </div>
+      </div>
+  
+      <% }) %>
+
+    <!-- <div class="search-playlist-item row align-items-center">
       <div class="col">
         <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Playlist Image">
       </div>
@@ -133,64 +135,58 @@
         <p> Playlist name </p>
         <p> Owner name </p>
       </div>
-    </div>
-    <div class="search-playlist-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Playlist Image">
-      </div>
-      <div class="col">
-        <p> Playlist name </p>
-        <p> Owner name </p>
-      </div>
-    </div>
-    <div class="search-playlist-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Playlist Image">
-      </div>
-      <div class="col">
-        <p> Playlist name </p>
-        <p> Owner name </p>
-      </div>
-    </div>
+    </div> -->
+
   </section>
   
+  <section id="search-shows" class="search-item-margin">
+    <h2>Shows</h2>
+
+    <% shows.forEach(function (show) { %>
+
+      <div class="search-show-item row align-items-center">
+        <div class="col">
+          <img class="smaller-image" src="<%= show.images[0].url %>" alt="Show Image">
+        </div>
+        <div class="col">
+          <p> <%= show.name %> </p>
+          <p> <%= show.publisher %> </p>
+        </div>
+      </div>
   
-  
-  <section id="search-podcasts" class="search-item-margin">
-    <h2>Podcasts</h2>
-    <div class="search-podcast-item row align-items-center">
+    <% }) %>
+
+    <!-- <div class="search-show-item row align-items-center">
       <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Podcast Image">
+        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Show Image">
       </div>
       <div class="col">
-        <p> Podcast name </p>
+        <p> Show name </p>
         <p> Owner name </p>
       </div>
-    </div>
-    <div class="search-podcast-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Podcast Image">
-      </div>
-      <div class="col">
-        <p> Podcast name </p>
-        <p> Owner name </p>
-      </div>
-    </div>
-    <div class="search-podcast-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Podcast Image">
-      </div>
-      <div class="col">
-        <p> Podcast name </p>
-        <p> Owner name </p>
-      </div>
-    </div>
+    </div> -->
+
   </section>
   
   
   <section id="search-episodes" class="search-item-margin">
     <h2>Episodes</h2>
-    <div class="search-episode-item row align-items-center">
+
+    <% episodes.forEach(function (episode) { %>
+
+      <div class="search-episode-item row align-items-center">
+        <div class="col">
+          <img class="smaller-image" src="<%= episode.images[0].url %>" alt="Episode Image">
+        </div>
+        <div class="col">
+          <p> <%= episode.release_date %> </p>
+          <p> <%= episode.duration_ms %> </p>
+        </div>
+      </div>
+  
+    <% }) %>
+
+    <!-- <div class="search-episode-item row align-items-center">
       <div class="col">
         <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Episode Image">
       </div>
@@ -198,57 +194,39 @@
         <p> Episode publish year </p>
         <p> Episode time </p>
       </div>
-    </div>
-    <div class="search-episode-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Episode Image">
-      </div>
-      <div class="col">
-        <p> Episode publish year </p>
-        <p> Episode time </p>
-      </div>
-    </div>
-    <div class="search-episode-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Episode Image">
-      </div>
-      <div class="col">
-        <p> Episode publish year </p>
-        <p> Episode time </p>
-      </div>
-    </div>
+    </div> -->
+
   </section>
   
+
+   <!-- BUG: Audiobooks doesn't show up. But I believe this is Spotify's fault because I can't even access audiobooks from their website too. -->
+  <section id="search-audiobooks" class="search-item-margin">
+    <h2>Audiobooks</h2>
+
+    <% audiobooks.forEach(function (audiobook) { %>
+
+      <div class="search-audiobook-item row align-items-center">
+        <div class="col">
+          <img class="smaller-image" src="<%= audiobook.images[0].url %>" alt="Audiobook Image">
+        </div>
+        <div class="col">
+          <p> audiobook.name </p>
+          <p> audiobook.authors.name </p>
+        </div>
+      </div>
   
-  <section id="search-profiles" class="search-item-margin">
-    <h2>Profiles</h2>
-    <div class="search-profile-item row align-items-center">
+    <% }) %>
+
+    <!-- <div class="search-audiobook-item row align-items-center">
       <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Profile Image">
+        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Audiobook Image">
       </div>
       <div class="col">
         <p> Playlist count </p>
         <p> Following </p>
       </div>
-    </div>
-    <div class="search-profile-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Profile Image">
-      </div>
-      <div class="col">
-        <p> Playlist count </p>
-        <p> Following </p>
-      </div>
-    </div>
-    <div class="search-profile-item row align-items-center">
-      <div class="col">
-        <img src="https://rehabconceptspt.com/wp-content/uploads/2016/06/placeholder-640-square.jpg" alt="Profile Image">
-      </div>
-      <div class="col">
-        <p> Playlist count </p>
-        <p> Following </p>
-      </div>
-    </div>
+    </div> -->
+
   </section>
   
 
