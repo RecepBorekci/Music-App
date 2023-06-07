@@ -3,6 +3,7 @@
 <div class="search-results">
 
   <!-- FIX ME: App currently doesn't take top result input. Implement a top result. -->
+  <!-- FIX ME: This page currently changes all results' buttons altogether. Make it so that only playing item's button changes-->
   <section id="search-top-result">
     <div class="container">
       <h2>Top Result</h2>
@@ -32,6 +33,17 @@
           <div class="col">
             <p> <%= song.name %> </p>
             <p> <%= song.artists.name %> </p>
+          </div>
+          <div class="col">
+            <form action="/search" method="post">
+              <button class="search-item-button" name="playSongButton" type="submit" value="<%= song.uri %>">
+                <% if (is_playing) { %>
+                  <i class="fa-solid fa-pause"></i>
+                <% } else { %>
+                  <i class="fa-solid fa-play"></i>
+                <% } %>
+              </button>
+            </form>
           </div>
         </div>
 
@@ -63,6 +75,17 @@
         <p> Artist </p>
         <p> <%= artist.followers.total %> </p>
       </div>
+      <div class="col">
+        <form action="/search" method="post">
+          <button class="search-item-button" name="playArtistButton" type="submit" value="<%= artist.uri %>">
+            <% if (is_playing) { %>
+              <i class="fa-solid fa-pause"></i>
+            <% } else { %>
+              <i class="fa-solid fa-play"></i>
+            <% } %>
+          </button>
+        </form>
+      </div>
     </div>
 
     <% }) %>
@@ -92,6 +115,17 @@
           <p> <%= album.name %> </p>
           <p> <%= album.release_date %> </p>
           <p> <%= album.artists.name %> </p>
+        </div>
+        <div class="col">
+          <form action="/search" method="post">
+            <button class="search-item-button" name="playAlbumButton" type="submit" value="<%= album.uri %>">
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            </button>
+          </form>
         </div>
       </div>
   
@@ -123,6 +157,17 @@
           <p> <%= playlist.name %> </p>
           <p> <%= playlist.owner.display_name %> </p>
         </div>
+        <div class="col">
+          <form action="/search" method="post">
+            <button class="search-item-button" name="playPlaylistButton" type="submit" value="<%= playlist.uri %>">
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            </button>
+          </form>
+        </div>
       </div>
   
       <% }) %>
@@ -151,6 +196,17 @@
         <div class="col">
           <p> <%= show.name %> </p>
           <p> <%= show.publisher %> </p>
+        </div>
+        <div class="col">
+          <form action="/search" method="post">
+            <button class="search-item-button" name="playShowButton" type="submit" value="<%= show.uri %>">
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            </button>
+          </form>
         </div>
       </div>
   
@@ -182,6 +238,17 @@
           <p> <%= episode.release_date %> </p>
           <p> <%= episode.duration_ms %> </p>
         </div>
+        <div class="col">
+          <form action="/search" method="post">
+            <button class="search-item-button" name="playEpisodeButton" type="submit" value="<%= episode.uri %>">
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            </button>
+          </form>
+        </div>
       </div>
   
     <% }) %>
@@ -212,6 +279,17 @@
         <div class="col">
           <p> audiobook.name </p>
           <p> audiobook.authors.name </p>
+        </div>
+        <div class="col">
+          <form action="/search" method="post">
+            <button class="search-item-button" name="playAudiobookButton" type="submit" value="<%= audiobook.uri %>">
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            </button>
+          </form>
         </div>
       </div>
   

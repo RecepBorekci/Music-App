@@ -200,11 +200,49 @@ app.post("/search", async function (req, res) {
   
   let query = req.body.searchQuery;
 
+  const songURI = req.body.playSongButton;
+  const artistURI = req.body.playArtistButton;
+  const albumURI = req.body.playAlbumButton;
+  const playlistURI = req.body.playPlaylistButton;
+  const showURI = req.body.playShowButton;
+  const episodeURI = req.body.playEpisodeButton;
+  const audiobookURI = req.body.playAudiobookButton;
+
   console.log(query);
 
   await search(query);
 
   res.redirect('/search');
+
+  console.log(songURI);
+
+  // TODO: Add a check to stop if something plays. If nothing plays play.
+
+  if (songURI) {
+    // Logic for playing a song
+    await playSingleSong(songURI);
+  } else if (artistURI) {
+    // Logic for playing an artist
+    await playArtist(artistURI);
+  } else if (albumURI) {
+    // Logic for playing a playlist
+    await playAlbum(albumURI);
+  } else if (playlistURI) {
+    // Logic for playing an album
+    await playPlaylistSongs(playlistURI);
+  } else if (showURI) {
+    // Logic for playing a show
+    await playShow(showURI);
+  } else if (episodeURI) {
+    // Logic for playing an episode
+    // await playEpisode(episodeURI);
+  } else if (audiobookURI) {
+    // Logic for playing an audiobook
+    // await playAudiobook(audiobookURI);
+  }
+
+  await isPlaying();
+
 });
 
 app.get("/search", function (req, res) {
@@ -417,6 +455,116 @@ async function getDevice() {
   });
 }
 
+async function playSong(playlist_song_uris, song_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const data = {
+    "offset": {
+      "uri": song_uri
+    },
+    "uris": playlist_song_uris
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function playSingleSong(song_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'Content-Type': 'application/json'
+  };
+
+  const data = {
+    uris: [song_uri], // Wrap the song_uri in an array
+    offset: { position: 0 }
+  };
+
+  return axios.put('https://api.spotify.com/v1/me/player/play', data, {
+    headers: headers,
+    params: {
+      limit: 50
+    }
+  })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+async function playArtist(artist_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  const data = {
+    "context_uri": artist_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function playAlbum(album_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  const data = {
+    "context_uri": album_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
 async function playPlaylistSongs(playlist_uri) {
 
   const { access_token, token_type } = token_response;
@@ -432,52 +580,108 @@ async function playPlaylistSongs(playlist_uri) {
     },
   };
 
-  if (!is_playing) {
-    return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
-      headers: headers,
-      params: {
-        limit: 50,
-      },
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      throw error;
-    });
-  }
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
 
 }
 
-async function playSong(playlist_song_uris, song_uri) {
+async function playShow(show_uri) {
   const { access_token, token_type } = token_response;
 
   const headers = {
     Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
   };
 
   const data = {
-    "offset": {
-      "uri": song_uri
-    },
-    "uris": playlist_song_uris
+    "context_uri": show_uri,
   };
 
-  if (!is_playing) {
-    return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
-      headers: headers,
-      params: {
-        limit: 50,
-      },
-    })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      throw error;
-    });
-  }
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
 }
+
+async function playEpisode(episode_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  console.log(episode_uri);
+
+  const data = {
+    "context_uri": episode_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function playAudiobook(audiobook_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  const data = {
+    "context_uri": audiobook_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+
+
+
+
 
 async function startPlayback() {
   const { access_token, token_type } = token_response;
