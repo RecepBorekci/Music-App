@@ -1,44 +1,52 @@
 <%- include("partials/header") %>
 
-<div class="container mt-5 profile-container">
-  <table cellspacing="30">
-    <tr>
-      <td style="padding: 30px; margin-right: 60px">
-        <img
-        class="rounded-circle"
-          src=<%= profilePicture %>
-          alt="Profile Picture"
-          width="250"
-          height="250"
-        />
-      </td>
-      <td style="padding: 30px">
-        <h1 style="color: #fff"><%= username %></h1>
-        <em>
-          <p style="color: #e0e0e0"><%= email %></p>
-          <p style="color: #e0e0e0"><%= followers %> followers</p>
-        </em>
-      </td>
-    </tr>
-  </table>
-</div>
-<div class="logout-container">
-  <button onclick="logout()" class="btn btn-primary btn-lg logout-button">LOG OUT</button>
-</div>
+<section class="profile">
+  <div class="container mt-5 profile-container">
+    <table cellspacing="30">
+      <tr>
+        <td style="padding: 30px; margin-right: 60px">
+          <img
+          class="rounded-circle"
+            src=<%= profilePicture %>
+            alt="Profile Picture"
+            width="250"
+            height="250"
+          />
+        </td>
+        <td style="padding: 30px">
+          <h1 style="color: #fff"><%= username %></h1>
+          <em>
+            <p style="color: #e0e0e0"><%= email %></p>
+            <p style="color: #e0e0e0"><%= followers %> followers</p>
+          </em>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="logout-container">
+    <button onclick="logout()" class="btn btn-primary btn-lg logout-button">LOG OUT</button>
+  </div>
+  
+  <script>
+    function logout() {
+    const url = "https://www.spotify.com/logout/";
+    const spotifyLogoutWindow = window.open(
+      url,
+      "Spotify Logout",
+      "width=700,height=500,top=40,left=40"
+    );
+    setTimeout(() => {
+      spotifyLogoutWindow.close();
+      window.location.href = "/login";
+    }, 2000);
+  }
+  </script>
+</section>
 
-<script>
-  function logout() {
-  const url = "https://www.spotify.com/logout/";
-  const spotifyLogoutWindow = window.open(
-    url,
-    "Spotify Logout",
-    "width=700,height=500,top=40,left=40"
-  );
-  setTimeout(() => {
-    spotifyLogoutWindow.close();
-    window.location.href = "/login";
-  }, 2000);
-}
-</script>
+<section>
+  
+</section>
+
+
 
 <%- include("partials/footer", { is_playing: is_playing }) %>
