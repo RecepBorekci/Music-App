@@ -28,7 +28,7 @@ let code = '';
 
 let is_playing = false;
 
-var user = {};
+let user = {};
 let currentPlaylist = {};
 let currentlyPlayingSong = {};
 var playlists = {};
@@ -204,6 +204,26 @@ async function fetchToken() {
     },
   });
 }
+
+async function fetchCurrentUserData() {
+
+  
+  return axios
+  .get(`https://api.spotify.com/v1/me`, {
+    headers: {
+      Authorization: `${token_type} ${access_token}`,
+    },
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
 
 // Gets the data for the playlist and playlist songs
 async function fetchData() {
