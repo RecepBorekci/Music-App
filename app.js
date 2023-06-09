@@ -35,10 +35,8 @@ var playlists = {};
 let playlist_songs = {};
 let currentPlaylistID = '';
 let currentPlaylistURI = '';
-
-app.get("/", function (req, res) {
-  res.render("index", { is_playing: is_playing });
-});
+let top_artists = [];
+let top_songs = [];
 
 app.get("/login", function (req, res) {
   var state = generateRandomString(16);
@@ -57,6 +55,16 @@ app.get("/login", function (req, res) {
   );
 });
 
+app.get("/callback", function (req, res) {
+  code = req.query.code || null;
+  fetchData();
+  res.redirect(back_url);
+});
+
+app.get("/", function (req, res) {
+  res.render("index", { is_playing: is_playing });
+});
+
 app.get("/profile", function profile(req, res) {
   try {
     res.render("profile.ejs", {
@@ -67,19 +75,15 @@ app.get("/profile", function profile(req, res) {
       username: user.display_name,
       email: user.email,
       followers: user.followers.total,
-      is_playing: is_playing
+      is_playing: is_playing,
+      top_artists: top_artists,
+      top_songs: top_songs
     });
   } catch (error) {
     console.log("Cannot go to profile page. Redirecting to login page.");
     back_url = "/profile";
     res.redirect("/login");
   }
-});
-
-app.get("/callback", function (req, res) {
-  code = req.query.code || null;
-  fetchData();
-  res.redirect(back_url);
 });
 
 app.get("/playlist", async function (req, res) {
@@ -205,20 +209,42 @@ async function fetchToken() {
   });
 }
 
-async function fetchCurrentUserData() {
-
-  
+async function fetchUserTopArtists() {
   return axios
-  .get(`https://api.spotify.com/v1/me`, {
+  .get(`https://api.spotify.com/v1/me/top/artists`, {
     headers: {
       Authorization: `${token_type} ${access_token}`,
     },
     params: {
-      limit: 50,
+      limit: 5,
     },
   })
   .then((response) => {
-    return response.data;
+
+    console.log(response.data.href);
+
+    return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchUserTopSongs() {
+  return axios
+  .get(`https://api.spotify.com/v1/me/top/tracks`, {
+    headers: {
+      Authorization: `${token_type} ${access_token}`,
+    },
+    params: {
+      limit: 5,
+    },
+  })
+  .then((response) => {
+
+    console.log(response.data.href);
+
+    return response.data.items;
   })
   .catch((error) => {
     throw error;
@@ -228,7 +254,7 @@ async function fetchCurrentUserData() {
 // Gets the data for the playlist and playlist songs
 async function fetchData() {
   fetchToken()
-    .then((response) => {
+    .then(async (response) => {
       if (response.status === 200) {
 
         token_response = response.data;
@@ -240,7 +266,7 @@ async function fetchData() {
               Authorization: `${token_type} ${access_token}`,
             },
           })
-          .then((response) => {
+          .then(async (response) => {
             //user = `${JSON.stringify(response.data, null, 2)}`;
             user = response.data;
             userId = user.id;
@@ -272,6 +298,7 @@ async function fetchData() {
             // console.log("THE PLAYLIST ID: " + playlist_id);
             // console.log("href from playslist: " + playlist_songs_href);
             // console.log(playlists.items);
+
           })
           .catch((error) => {
             console.log(error);
