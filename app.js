@@ -37,6 +37,7 @@ let playlist_songs = {};
 let currentPlaylistID = '';
 let currentPlaylistURI = '';
 let currentlyPlayingID = '';
+let currentSongURI = '';
 
 // TODO: Implement finding top element, song, album or artist and send it to search.ejs
 let search_top_element = [];
@@ -147,7 +148,6 @@ app.route("/playlist/:playlistID")
 
   console.log("This is the playlist id: " + currentPlaylistID);
 
-  await isPlaying();
   currentlyPlayingSong = await getCurrentlyPlayingSong();
 
   try {
@@ -160,35 +160,34 @@ app.route("/playlist/:playlistID")
   }
 })
 .post(async function(req, res) {
-  const song_uri = req.body.playlist_song_button;
-
-  await isPlaying();
+  const clickedSongURI = req.body.playlist_song_button;
 
   if (playlist_songs) {
     const song_uris = playlist_songs.map((song) => song.track.uri);
 
     console.log("All URIs of the songs:", song_uris);
-    console.log("URI of the song:", song_uri);
+    console.log("URI of the song:", clickedSongURI);
 
-    if (!is_playing) {
-      await playSong(song_uris, song_uri);
-    } else {
+    if (currentSongURI === clickedSongURI) {
+      // Pause the playback
       await pausePlayback();
+      currentSongURI = null; // Reset currentSongURI
+    } else {
+      currentSongURI = clickedSongURI;
+      await playSong(song_uris, clickedSongURI);
     }
-
-    currentlyPlayingSong = await getCurrentlyPlayingSong();
   }
-
-  await isPlaying();
 
   res.redirect("/playlist/" + currentPlaylistID);
 });
 
 // Searching screen
 app.route("/search")
-.get(function (req, res) {
+.get(async function (req, res) {
 
-  console.log(currentlyPlayingID);;
+  await isPlaying();
+
+  console.log(currentlyPlayingID);
 
   res.render("search", {
     is_playing: is_playing,
@@ -211,8 +210,6 @@ app.route("/search")
   await search(query);
 
   res.redirect('/search');
-
-  await isPlaying();
 
 });
 
@@ -522,7 +519,7 @@ async function getDevice() {
   });
 }
 
-async function playSong(playlist_song_uris, song_uri) {
+async function playSong(playlist_song_uris, clickedSongURI) {
   const { access_token, token_type } = token_response;
 
   const headers = {
@@ -531,7 +528,7 @@ async function playSong(playlist_song_uris, song_uri) {
 
   const data = {
     "offset": {
-      "uri": song_uri
+      "uri": clickedSongURI
     },
     "uris": playlist_song_uris
   };
@@ -551,7 +548,7 @@ async function playSong(playlist_song_uris, song_uri) {
 
 }
 
-async function playSingleSong(song_uri) {
+async function playSingleSong(clickedSongURI) {
   const { access_token, token_type } = token_response;
 
   const headers = {
@@ -560,7 +557,7 @@ async function playSingleSong(song_uri) {
   };
 
   const data = {
-    uris: [song_uri], // Wrap the song_uri in an array
+    uris: [clickedSongURI], // Wrap the clickedSongURI in an array
     offset: { position: 0 }
   };
 
