@@ -43,10 +43,27 @@
   </script>
 </section>
 
-<section>
-  
+<section class="top-tracks">
+
+  <!-- <div class="top-song-item">
+    <img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg" alt="Top Song Image">
+    <p> Song name </p>
+    <p> Song artist </p>
+  </div>
+
+  <% top_songs.forEach( function (top_song) { %>
+    <div class="top-song-item">
+      <img src="<%= top_song.album.images[0].url %>" alt="Top Song Image">
+      <p> <%= top_song.name %></p>
+      <p> <%= top_song.artists.name %></p>
+    </div>
+    <% }) %> -->
+
 </section>
 
+<section class="top-artists">
+
+</section>
 
 
 <%- include("partials/footer", { is_playing: is_playing }) %>
