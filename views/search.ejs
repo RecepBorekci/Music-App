@@ -35,7 +35,7 @@
             <p> <%= song.artists.name %> </p>
           </div>
           <div class="col">
-            <form action="/search" method="post">
+            <form action="/play" method="post">
               <button class="search-item-button" name="playSongButton" type="submit" value="<%= song.uri %>">
                 <% if (is_playing) { %>
                   <i class="fa-solid fa-pause"></i>
@@ -76,7 +76,7 @@
         <p> <%= artist.followers.total %> </p>
       </div>
       <div class="col">
-        <form action="/search" method="post">
+        <form action="/play" method="post">
           <button class="search-item-button" name="playArtistButton" type="submit" value="<%= artist.uri %>">
             <% if (is_playing) { %>
               <i class="fa-solid fa-pause"></i>
@@ -117,7 +117,7 @@
           <p> <%= album.artists.name %> </p>
         </div>
         <div class="col">
-          <form action="/search" method="post">
+          <form action="/play" method="post">
             <button class="search-item-button" name="playAlbumButton" type="submit" value="<%= album.uri %>">
               <% if (is_playing) { %>
                 <i class="fa-solid fa-pause"></i>
@@ -158,7 +158,7 @@
           <p> <%= playlist.owner.display_name %> </p>
         </div>
         <div class="col">
-          <form action="/search" method="post">
+          <form action="/play" method="post">
             <button class="search-item-button" name="playPlaylistButton" type="submit" value="<%= playlist.uri %>">
               <% if (is_playing) { %>
                 <i class="fa-solid fa-pause"></i>
@@ -198,7 +198,7 @@
           <p> <%= show.publisher %> </p>
         </div>
         <div class="col">
-          <form action="/search" method="post">
+          <form action="/play" method="post">
             <button class="search-item-button" name="playShowButton" type="submit" value="<%= show.uri %>">
               <% if (is_playing) { %>
                 <i class="fa-solid fa-pause"></i>
@@ -239,7 +239,7 @@
           <p> <%= episode.duration_ms %> </p>
         </div>
         <div class="col">
-          <form action="/search" method="post">
+          <form action="/play" method="post">
             <button class="search-item-button" name="playEpisodeButton" type="submit" value="<%= episode.uri %>">
               <% if (is_playing) { %>
                 <i class="fa-solid fa-pause"></i>
@@ -281,7 +281,7 @@
           <p> audiobook.authors.name </p>
         </div>
         <div class="col">
-          <form action="/search" method="post">
+          <form action="/play" method="post">
             <button class="search-item-button" name="playAudiobookButton" type="submit" value="<%= audiobook.uri %>">
               <% if (is_playing) { %>
                 <i class="fa-solid fa-pause"></i>

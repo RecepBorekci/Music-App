@@ -102,7 +102,8 @@ app.get("/profile", function profile(req, res) {
   }
 });
 
-app.get("/playlist", async function (req, res) {
+app.route("/playlist")
+.get(async function (req, res) {
 
   await isPlaying();
 
@@ -112,9 +113,8 @@ app.get("/playlist", async function (req, res) {
     back_url = "/playlist";
     res.redirect("/login");
   }
-});
-
-app.post("/playlist", async function (req, res) {
+})
+.post(async function (req, res) {
 
   console.log("button is pressed");
 
@@ -152,7 +152,9 @@ app.post("/playlist", async function (req, res) {
 });
 
 // BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an error. FIXED✅
-app.get("/playlist/:playlistID", async function(req, res) {
+
+app.route("/playlist/:playlistID")
+.get(async function(req, res) {
   currentPlaylistID = req.params.playlistID;
 
   console.log("This is the playlist id: " + currentPlaylistID);
@@ -173,9 +175,8 @@ app.get("/playlist/:playlistID", async function(req, res) {
       res.redirect("/login");
     });
     
-});
-
-app.post("/playlist/:playlistID", async function(req, res) {
+})
+.post(async function(req, res) {
   var song_uri = req.body.playlist_song_button;
 
   await isPlaying();
@@ -203,18 +204,22 @@ app.post("/playlist/:playlistID", async function(req, res) {
 });
 
 // Searching screen
-
-app.post("/search", async function (req, res) {
+app.route("/search")
+.get(function (req, res) {
+  res.render("search", {
+    is_playing: is_playing,
+    songs: search_songs,
+    artists: search_artists,
+    albums: search_albums,
+    playlists: search_playlists,
+    shows: search_shows,
+    episodes: search_episodes,
+    audiobooks: search_audiobooks
+  });
+})
+.post(async function (req, res) {
   
   let query = req.body.searchQuery;
-
-  const songURI = req.body.playSongButton;
-  const artistURI = req.body.playArtistButton;
-  const albumURI = req.body.playAlbumButton;
-  const playlistURI = req.body.playPlaylistButton;
-  const showURI = req.body.playShowButton;
-  const episodeURI = req.body.playEpisodeButton;
-  const audiobookURI = req.body.playAudiobookButton;
 
   console.log(query);
 
@@ -222,40 +227,52 @@ app.post("/search", async function (req, res) {
 
   res.redirect('/search');
 
-  console.log(songURI);
-
-  // TODO: Add a check to stop if something plays. If nothing plays play.
-
-  if (songURI) {
-    // Logic for playing a song
-    await playSingleSong(songURI);
-  } else if (artistURI) {
-    // Logic for playing an artist
-    await playArtist(artistURI);
-  } else if (albumURI) {
-    // Logic for playing a playlist
-    await playAlbum(albumURI);
-  } else if (playlistURI) {
-    // Logic for playing an album
-    await playPlaylistSongs(playlistURI);
-  } else if (showURI) {
-    // Logic for playing a show
-    await playShow(showURI);
-  } else if (episodeURI) {
-    // Logic for playing an episode
-    // await playEpisode(episodeURI);
-  } else if (audiobookURI) {
-    // Logic for playing an audiobook
-    // await playAudiobook(audiobookURI);
-  }
-
   await isPlaying();
 
 });
 
-app.get("/search", function (req, res) {
-  res.render("search", {is_playing: is_playing, songs: search_songs, artists: search_artists, albums: search_albums, playlists: search_playlists, shows: search_shows, episodes: search_episodes, audiobooks: search_audiobooks});
-});
+app.route("/play")
+  .post(async function (req, res) {
+    const songURI = req.body.playSongButton;
+    const artistURI = req.body.playArtistButton;
+    const albumURI = req.body.playAlbumButton;
+    const playlistURI = req.body.playPlaylistButton;
+    const showURI = req.body.playShowButton;
+    const episodeURI = req.body.playEpisodeButton;
+    const audiobookURI = req.body.playAudiobookButton;
+
+    console.log(songURI);
+
+    // TODO: Add a check to stop if something plays. If nothing plays, play.
+
+    if (songURI) {
+      // Logic for playing a song
+      await playSingleSong(songURI);
+    } else if (artistURI) {
+      // Logic for playing an artist
+      await playArtist(artistURI);
+    } else if (albumURI) {
+      // Logic for playing an album
+      await playAlbum(albumURI);
+    } else if (playlistURI) {
+      // Logic for playing a playlist
+      await playPlaylistSongs(playlistURI);
+    } else if (showURI) {
+      // Logic for playing a show
+      await playShow(showURI);
+    } else if (episodeURI) {
+      // Logic for playing an episode
+      // await playEpisode(episodeURI);
+    } else if (audiobookURI) {
+      // Logic for playing an audiobook
+      // await playAudiobook(audiobookURI);
+    }
+
+    await isPlaying();
+
+    res.redirect('/search');
+  });
+
 
 async function fetchToken() {
   return axios({

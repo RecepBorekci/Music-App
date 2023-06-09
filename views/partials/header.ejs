@@ -30,44 +30,38 @@
   <body>
     
     <!-- BUG: Active element is stuck at playlist. It should change according to current page. -->
-  <header>
-    <nav class="navbar navbar-dark navbar-expand-lg bg-body-tertiary fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand ms-4" href="/"
-          ><img class="brand-icon" src="images/icon.svg" alt="icon" />Musing</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarText"
-          aria-controls="navbarText"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav ms-auto me-4 mb-2 mb-lg-0 fs-5">
-            <div class="container-fluid">
-              <form action="/search" method="post" class="d-flex" role="search">
-                <input class="form-control me-2" name="searchQuery" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-              </form>
-            </div>
-            <li class="nav-item ms-2">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item ms-2">
-              <a class="nav-link active" aria-current="page" href="/playlist">Playlists</a>
-            </li>
-            <li class="nav-item ms-2">
-              <a class="nav-link" href="/profile">Profile</a>
-            </li>
-          </ul>
+    <header>
+      <nav class="navbar navbar-dark navbar-expand-lg bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand ms-4" href="/">
+            <img class="brand-icon" src="/images/icon.svg" alt="icon" />
+            Musing
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto me-4 mb-2 mb-lg-0 fs-5">
+              <div class="container-fluid d-flex justify-content-center">
+                <form action="/search" method="post" class="d-flex" role="search">
+                  <input class="form-control me-2" name="searchQuery" type="search" placeholder="Search"
+                    aria-label="Search">
+                </form>
+              </div>
+              <li class="nav-item ms-2">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item ms-2">
+                <a class="nav-link" aria-current="page" href="/playlist">Playlists</a>
+              </li>
+              <li class="nav-item ms-2">
+                <a class="nav-link" href="/profile">Profile</a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+    </header>
 
     
