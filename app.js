@@ -144,6 +144,9 @@ app.route("/playlist")
 
 app.route("/playlist/:playlistID")
 .get(async function(req, res) {
+
+  await isPlaying();
+
   currentPlaylistID = req.params.playlistID;
 
   console.log("This is the playlist id: " + currentPlaylistID);
