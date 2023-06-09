@@ -104,53 +104,40 @@ app.get("/profile", function profile(req, res) {
 });
 
 app.route("/playlist")
-.get(async function (req, res) {
+  .get(async function (req, res) {
+    await isPlaying();
 
-  await isPlaying();
+    try {
+      res.render("playlist.ejs", {
+        items: playlists.items,
+        is_playing: is_playing,
+        current_playlist_uri: currentPlaylistURI
+      });
+    } catch (error) {
+      back_url = "/playlist";
+      res.redirect("/login");
+    }
+  })
+  .post(async function (req, res) {
+    console.log("button is pressed");
 
-  try {
-    res.render("playlist.ejs", { items: playlists.items , is_playing: is_playing, playlist_id: currentPlaylist.id});
-  } catch (error) {
-    back_url = "/playlist";
-    res.redirect("/login");
-  }
-})
-.post(async function (req, res) {
+    const clickedPlaylistURI = req.body.playlist_uri;
 
-  console.log("button is pressed");
+    if (currentPlaylistURI === clickedPlaylistURI) {
+      // Pause the playback
+      await pausePlayback();
+      currentPlaylistURI = null; // Reset currentPlaylistURI
+    } else {
+      currentPlaylistURI = clickedPlaylistURI;
+      await playPlaylistSongs(currentPlaylistURI);
+    }
 
-  currentPlaylistURI = req.body.playlist_uri;
-  let currentPlaylistID = req.body.playlist_id;
+    await isPlaying();
 
-  const skipButton = req.body.skipButton; // Get the value of the submitted button
+    res.redirect("/playlist");
+  });
 
-  console.log("URI of the playlist: " + currentPlaylistURI);
-  console.log("ID of the playlist: " + currentPlaylistID);
 
-  currentPlaylist = await getPlaylist(currentPlaylistID);
-  console.log("ID of the playlist: " + currentPlaylistID);
-
-  if (!is_playing) {
-    await playPlaylistSongs(currentPlaylistURI);
-  } else {
-    await pausePlayback();
-  }
-
-  if (skipButton === 'previous') {
-    // Previous button was pressed, handle accordingly
-    await skipToPreviousSong();
-    await startPlayback();
-  } else if (skipButton === 'next') {
-    // Next button was pressed, handle accordingly
-    await skipToNextSong();
-    await startPlayback();
-  }
-
-  await isPlaying();
-
-  res.redirect("/playlist");
-
-});
 
 // BUG: It goes to login screen after playing or pausing a song from a playlist. It means that there's an error. FIXED✅
 
@@ -163,27 +150,21 @@ app.route("/playlist/:playlistID")
   await isPlaying();
   currentlyPlayingSong = await getCurrentlyPlayingSong();
 
+  try {
     // Fetch the playlist songs based on the playlistID
-    fetchPlaylistSongs(currentPlaylistID)
-    .then((playlistSongs) => {
-
-      playlist_songs = playlistSongs;
-
-      res.render("playlist_songs", { playlistSongs: playlistSongs , is_playing: is_playing, current_song_id: currentlyPlayingSong.id, current_playlist_id: currentPlaylistID});
-    })
-    .catch((error) => {
-      console.log(error);
-      res.redirect("/login");
-    });
-    
+    playlist_songs = await fetchPlaylistSongs(currentPlaylistID);
+    res.render("playlist_songs", { playlistSongs: playlist_songs, is_playing: is_playing, current_song_id: currentlyPlayingSong.id, current_playlist_id: currentPlaylistID });
+  } catch (error) {
+    console.log(error);
+    res.redirect("/login");
+  }
 })
 .post(async function(req, res) {
-  var song_uri = req.body.playlist_song_button;
+  const song_uri = req.body.playlist_song_button;
 
   await isPlaying();
 
   if (playlist_songs) {
-
     const song_uris = playlist_songs.map((song) => song.track.uri);
 
     console.log("All URIs of the songs:", song_uris);
@@ -201,7 +182,6 @@ app.route("/playlist/:playlistID")
   await isPlaying();
 
   res.redirect("/playlist/" + currentPlaylistID);
-
 });
 
 // Searching screen

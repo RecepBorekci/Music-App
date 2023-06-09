@@ -34,13 +34,13 @@
                 <h1 class="playlist-item-title"><%= items[i].name %></h1>
                 <p class="playlist-item-subtitle"><%= items[i].tracks.total %> songs</p>
                 <form class="playlist-playback-control" action="/playlist" method="post">
-                  <input type="hidden" name="playlist_id" value="<%= items[i].id %>">
+                  <input type="hidden" name="playlist_uri" value="<%= uri %>">
                   <button id="previousButton" class="playlist-item-button button-previous" type="submit" name="skipButton" value="previous">
                     <i class="fa-solid fa-backward"></i>
                   </button>
-                  <button class="playlist-item-button" type="submit" name="playlist_uri" value="<%= uri %>">
+                  <button class="playlist-item-button" type="submit">
                     <div>
-                      <% if (is_playing && playlist_id === items[i].id) { %>
+                      <% if (is_playing && current_playlist_uri === uri) { %>
                         <i class="fa-solid fa-pause"></i>
                       <% } else { %>
                         <i class="fa-solid fa-play"></i>
