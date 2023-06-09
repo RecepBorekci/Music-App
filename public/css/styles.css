@@ -12,10 +12,6 @@ a {
   text-decoration-color: transparent;
 }
 
-form {
-  margin-left: auto; /* Moves the play button to the rightmost position */
-}
-
 .bg-body-tertiary {
   background-color: #0f0027 !important;
 }
@@ -138,11 +134,17 @@ form {
   background-color: #27055e;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 35vw;
   height: 70%;
   border-radius: 4rem;
-  padding: 0 1rem;
+}
+
+.control-buttons form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1.5rem;
 }
 
 .button-previous,
@@ -151,18 +153,30 @@ form {
   align-items: center;
   justify-content: center;
   background-color: #3f0b93;
+  border-radius: 1rem;
+  padding: 2rem;
+  height: 1rem;
+  width: 4rem;
+}
+
+.button-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3f0b93;
   border-radius: 5rem;
-  height: 55%;
-  width: 17%;
+  padding: 1rem;
 }
 
 .button-previous:hover,
+.button-play:hover,
 .button-next:hover {
   background-color: #470da4;
 }
 
 .button-previous .fa-backward,
 .button-next .fa-forward,
+.button-play,
 .control-buttons .fa-pause,
 .control-buttons .fa-play {
   font-size: 1.8rem;
@@ -237,7 +251,6 @@ form {
 .playlist-item-button {
   background-color: #300772;
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: center;
   border-radius: 100%;
@@ -256,6 +269,7 @@ form {
 
 .playlist-playback-control {
   display: flex;
+  margin-left: auto;
 }
 
 /* playlist_songs.ejs */

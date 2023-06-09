@@ -3,19 +3,34 @@
 <footer class="controls-container">
     <div class="controls">
       <div class="control-buttons">
-        <div class="button-previous">
+        <!-- <div class="button-previous">
           <i class="fa-solid fa-backward"></i>
-        </div>
-        <% if (is_playing !== null) { %>
-          <% if (is_playing) { %>
-            <i class="fa-solid fa-pause"></i>
-          <% } else { %>
-            <i class="fa-solid fa-play"></i>
-          <% } %>
-        <% } %>
-        <div class="button-next">
+        </div> -->
+        <form action="/skip" method="post">
+          <button id="previousButton" class="button-previous" type="submit" name="skipButton" value="previous">
+            <i class="fa-solid fa-backward"></i>
+          </button>
+        </form>
+
+        <form action="/startPlayback" method="post">
+          <button id="playButton" class="button-play" type="submit" name="playButton" value="is_playing">
+            <% if (is_playing !== null) { %>
+              <% if (is_playing) { %>
+                <i class="fa-solid fa-pause"></i>
+              <% } else { %>
+                <i class="fa-solid fa-play"></i>
+              <% } %>
+            <% } %>
+          </button>
+        </form>
+        <form action="/skip" method="post">
+          <button id="nextButton" class="button-next" type="submit" name="skipButton" value="next">
+            <i class="fa-solid fa-forward"></i>
+          </button>
+        </form>
+        <!-- <div class="button-next">
           <i class="fa-solid fa-forward"></i>
-        </div>
+        </div> -->
       </div>
     </div>
 </footer>

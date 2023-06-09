@@ -268,7 +268,38 @@ app.route("/play")
     res.redirect('/search');
   });
 
+app.route("/startPlayback")
+.post(async function(req, res) {
 
+  if (is_playing) {
+    pausePlayback();
+  }
+  else {
+    startPlayback();
+  }
+
+  await isPlaying();
+  
+  res.redirect("/playlist");
+})
+
+app.route("/skip")
+.post(async function(req, res) {
+
+  const skipButton = req.body.skipButton; // Get the value of the submitted button
+
+  if (skipButton === 'previous') {
+    // Previous button was pressed, handle accordingly
+    await skipToPreviousSong();
+    await startPlayback();
+  } else if (skipButton === 'next') {
+    // Next button was pressed, handle accordingly
+    await skipToNextSong();
+    await startPlayback();
+  }
+
+  res.redirect("/playlist");
+})
 
 async function fetchToken() {
   return axios({
