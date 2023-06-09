@@ -36,6 +36,7 @@ var playlists = {};
 let playlist_songs = {};
 let currentPlaylistID = '';
 let currentPlaylistURI = '';
+let currentlyPlayingID = '';
 
 // TODO: Implement finding top element, song, album or artist and send it to search.ejs
 let search_top_element = [];
@@ -206,8 +207,12 @@ app.route("/playlist/:playlistID")
 // Searching screen
 app.route("/search")
 .get(function (req, res) {
+
+  console.log(currentlyPlayingID);;
+
   res.render("search", {
     is_playing: is_playing,
+    currently_playing_id: currentlyPlayingID,
     songs: search_songs,
     artists: search_artists,
     albums: search_albums,
@@ -240,38 +245,52 @@ app.route("/play")
     const showURI = req.body.playShowButton;
     const episodeURI = req.body.playEpisodeButton;
     const audiobookURI = req.body.playAudiobookButton;
+    const clickedItemID = req.body.currentlyPlayingId; // Get the ID of the clicked item
 
-    console.log(songURI);
+    // Check if the clicked item is the currently playing item
+    const isCurrentlyPlaying = currentlyPlayingID === clickedItemID;
 
-    // TODO: Add a check to stop if something plays. If nothing plays, play.
-
-    if (songURI) {
-      // Logic for playing a song
-      await playSingleSong(songURI);
-    } else if (artistURI) {
-      // Logic for playing an artist
-      await playArtist(artistURI);
-    } else if (albumURI) {
-      // Logic for playing an album
-      await playAlbum(albumURI);
-    } else if (playlistURI) {
-      // Logic for playing a playlist
-      await playPlaylistSongs(playlistURI);
-    } else if (showURI) {
-      // Logic for playing a show
-      await playShow(showURI);
-    } else if (episodeURI) {
-      // Logic for playing an episode
-      // await playEpisode(episodeURI);
-    } else if (audiobookURI) {
-      // Logic for playing an audiobook
-      // await playAudiobook(audiobookURI);
+    if (isCurrentlyPlaying) {
+      // Pause the playback
+      await pausePlayback();
+      currentlyPlayingID = null; // Reset currentlyPlayingID
+    } else {
+      if (songURI) {
+        // Logic for playing a song
+        await playSingleSong(songURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected song's ID
+      } else if (artistURI) {
+        // Logic for playing an artist
+        await playArtist(artistURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected artist's ID
+      } else if (albumURI) {
+        // Logic for playing an album
+        await playAlbum(albumURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected album's ID
+      } else if (playlistURI) {
+        // Logic for playing a playlist
+        await playPlaylistSongs(playlistURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected playlist's ID
+      } else if (showURI) {
+        // Logic for playing a show
+        await playShow(showURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected show's ID
+      } else if (episodeURI) {
+        // Logic for playing an episode
+        // await playEpisode(episodeURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected episode's ID
+      } else if (audiobookURI) {
+        // Logic for playing an audiobook
+        // await playAudiobook(audiobookURI);
+        currentlyPlayingID = clickedItemID; // Update currentlyPlayingID with the selected audiobook's ID
+      }
     }
 
     await isPlaying();
 
     res.redirect('/search');
   });
+
 
 
 async function fetchToken() {

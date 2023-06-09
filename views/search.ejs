@@ -36,8 +36,9 @@
           </div>
           <div class="col">
             <form action="/play" method="post">
+              <input type="hidden" name="currentlyPlayingId" value="<%=song.id%>">
               <button class="search-item-button" name="playSongButton" type="submit" value="<%= song.uri %>">
-                <% if (is_playing) { %>
+                <% if (is_playing && currently_playing_id === song.id) { %>
                   <i class="fa-solid fa-pause"></i>
                 <% } else { %>
                   <i class="fa-solid fa-play"></i>
@@ -77,8 +78,9 @@
       </div>
       <div class="col">
         <form action="/play" method="post">
+          <input type="hidden" name="currentlyPlayingId" value="<%=artist.id%>">
           <button class="search-item-button" name="playArtistButton" type="submit" value="<%= artist.uri %>">
-            <% if (is_playing) { %>
+            <% if (is_playing && currently_playing_id === artist.id) { %>
               <i class="fa-solid fa-pause"></i>
             <% } else { %>
               <i class="fa-solid fa-play"></i>
@@ -118,8 +120,9 @@
         </div>
         <div class="col">
           <form action="/play" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%=album.id%>">
             <button class="search-item-button" name="playAlbumButton" type="submit" value="<%= album.uri %>">
-              <% if (is_playing) { %>
+              <% if (is_playing && currently_playing_id === album.id) { %>
                 <i class="fa-solid fa-pause"></i>
               <% } else { %>
                 <i class="fa-solid fa-play"></i>
@@ -159,8 +162,9 @@
         </div>
         <div class="col">
           <form action="/play" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%=playlist.id%>">
             <button class="search-item-button" name="playPlaylistButton" type="submit" value="<%= playlist.uri %>">
-              <% if (is_playing) { %>
+              <% if (is_playing && currently_playing_id === playlist.id) { %>
                 <i class="fa-solid fa-pause"></i>
               <% } else { %>
                 <i class="fa-solid fa-play"></i>
@@ -199,8 +203,9 @@
         </div>
         <div class="col">
           <form action="/play" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%=show.id%>">
             <button class="search-item-button" name="playShowButton" type="submit" value="<%= show.uri %>">
-              <% if (is_playing) { %>
+              <% if (is_playing && currently_playing_id === show.id) { %>
                 <i class="fa-solid fa-pause"></i>
               <% } else { %>
                 <i class="fa-solid fa-play"></i>
@@ -240,8 +245,9 @@
         </div>
         <div class="col">
           <form action="/play" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%=episode.id%>">
             <button class="search-item-button" name="playEpisodeButton" type="submit" value="<%= episode.uri %>">
-              <% if (is_playing) { %>
+              <% if (is_playing && currently_playing_id === episode.id) { %>
                 <i class="fa-solid fa-pause"></i>
               <% } else { %>
                 <i class="fa-solid fa-play"></i>
@@ -282,8 +288,9 @@
         </div>
         <div class="col">
           <form action="/play" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%=audiobook.id%>">
             <button class="search-item-button" name="playAudiobookButton" type="submit" value="<%= audiobook.uri %>">
-              <% if (is_playing) { %>
+              <% if (is_playing && currently_playing_id === audiobook.id) { %>
                 <i class="fa-solid fa-pause"></i>
               <% } else { %>
                 <i class="fa-solid fa-play"></i>
