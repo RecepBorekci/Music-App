@@ -506,6 +506,116 @@ async function getDevice() {
   });
 }
 
+async function playSong(playlist_song_uris, song_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const data = {
+    "offset": {
+      "uri": song_uri
+    },
+    "uris": playlist_song_uris
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function playSingleSong(song_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'Content-Type': 'application/json'
+  };
+
+  const data = {
+    uris: [song_uri], // Wrap the song_uri in an array
+    offset: { position: 0 }
+  };
+
+  return axios.put('https://api.spotify.com/v1/me/player/play', data, {
+    headers: headers,
+    params: {
+      limit: 50
+    }
+  })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+async function playArtist(artist_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  const data = {
+    "context_uri": artist_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function playAlbum(album_uri) {
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    'content-type': 'application/json'
+  };
+
+  const data = {
+    "context_uri": album_uri,
+  };
+
+  return axios.put(`https://api.spotify.com/v1/me/player/play`, data, {
+    headers: headers,
+    params: {
+      limit: 50,
+    },
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
 async function playPlaylistSongs(playlist_uri) {
 
   const { access_token, token_type } = token_response;
