@@ -302,7 +302,14 @@ app.route("/skip")
   }
 
   res.redirect("/playlist");
-})
+});
+
+app.route("/artist/:artistID")
+.get(function (req, res) {
+  let artistID = req.params.artistID;
+
+  res.render("artist", {artistID: artistID});
+});
 
 async function fetchToken() {
   return axios({
