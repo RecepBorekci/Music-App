@@ -901,11 +901,11 @@ async function search(query) {
     search_episodes = response.data.episodes.items;
     search_audiobooks = response.data.audiobooks.items;
 
-    console.log(search_songs[0].name);
+    // console.log(search_songs[0].name);
 
-    console.log(search_songs[0].popularity);
-    console.log(search_artists[0].popularity);
-    console.log(search_albums[0]);
+    // console.log(search_songs[0].popularity);
+    // console.log(search_artists[0].popularity);
+    // console.log(search_albums[0]);
 
     return response.data;
   } catch (error) {
