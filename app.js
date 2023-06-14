@@ -49,17 +49,28 @@ let search_shows = [];
 let search_episodes = [];
 let search_audiobooks = [];
 
+const top_artists = [];
+const top_songs = [];
 
-app.get("/", function (req, res) {
-  res.render("index", { is_playing: is_playing });
+app.route("/").get(async function (req, res) {
+  const fetchedTopArtists = await fetchUserTopArtists();
+  const fetchedTopSongs = await fetchUserTopSongs();
+
+  if (top_artists.length === 0) {
+    top_artists.push(...fetchedTopArtists);
+  }
+
+  if (top_songs.length === 0) {
+    top_songs.push(...fetchedTopSongs);
+  }
+
+  res.render("index", { is_playing: is_playing, top_artists: top_artists, top_songs: top_songs });
 });
-let top_artists = [];
-let top_songs = [];
 
 app.get("/login", function (req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing";
+  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read";
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
@@ -77,10 +88,6 @@ app.get("/callback", function (req, res) {
   code = req.query.code || null;
   fetchData();
   res.redirect(back_url);
-});
-
-app.get("/", function (req, res) {
-  res.render("index", { is_playing: is_playing });
 });
 
 app.get("/profile", function profile(req, res) {
@@ -322,48 +329,6 @@ async function fetchToken() {
   });
 }
 
-async function fetchUserTopArtists() {
-  return axios
-  .get(`https://api.spotify.com/v1/me/top/artists`, {
-    headers: {
-      Authorization: `${token_type} ${access_token}`,
-    },
-    params: {
-      limit: 5,
-    },
-  })
-  .then((response) => {
-
-    console.log(response.data.href);
-
-    return response.data.items;
-  })
-  .catch((error) => {
-    throw error;
-  });
-} 
-
-async function fetchUserTopSongs() {
-  return axios
-  .get(`https://api.spotify.com/v1/me/top/tracks`, {
-    headers: {
-      Authorization: `${token_type} ${access_token}`,
-    },
-    params: {
-      limit: 5,
-    },
-  })
-  .then((response) => {
-
-    console.log(response.data.href);
-
-    return response.data.items;
-  })
-  .catch((error) => {
-    throw error;
-  });
-} 
-
 // Gets the data for the playlist and playlist songs
 async function fetchData() {
   fetchToken()
@@ -424,6 +389,61 @@ async function fetchData() {
       console.log(error);
     });
 }
+
+async function fetchUserTopArtists() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/me/top/artists`, {
+    headers: headers,
+    params: {
+      limit: 10,
+    },
+  })
+  .then((response) => {
+
+    console.log(response.data.items[0].followers);
+
+
+    console.log(response.data.href);
+
+    return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchUserTopSongs() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/me/top/tracks`, {
+    headers: headers,
+    params: {
+      limit: 10,
+    },
+  })
+  .then((response) => {
+
+    console.log(response.data.href);
+
+    return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
 
 async function getPlaylist(playlistID) {
   const { access_token, token_type } = token_response;

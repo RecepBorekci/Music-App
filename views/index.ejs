@@ -1,5 +1,55 @@
 <%- include("partials/header") %>
 
-    <div class="main-part"></div>
+    <section id="filter-options">
+        <div class="relax-filter">
+            <h6>Relax</h6>
+        </div>
+        <div class="energize-filter">
+            <h6>Energize</h6>
+        </div>
+        <div class="workout-filter">
+            <h6>Workout</h6>
+        </div>
+        <div class="focus-filter">
+            <h6>Focus</h6>
+        </div>
+        <div class="commute-filter">
+            <h6>Commute</h6>
+        </div>
+    </section>
+
+    <section id="user-top-artists"> 
+        <h4 class="top-artists-heading"> Your Favourite Artists </h4>
+
+        <div class="top-artists">
+            <% top_artists.forEach( function(top_artist) { %>
+                <div class="top-artist-item">
+                    <img src="<%= top_artist.images[0].url %>" alt="Top Artist Image">
+                    <p><%= top_artist.name %></p>
+                    <p><%= top_artist.followers.total %> Followers </p>
+                </div>
+            <% }); %>
+        </div>
+
+    </section>
+
+    <section id="user-top-songs">
+        <h4  class="top-songs-heading"> Your Favourite Songs </h4>
+        
+        <div class="top-songs">
+            <% top_songs.forEach( function(top_song) { %>
+                <div class="top-song-item">
+                    <img src="<%= top_song.album.images[0].url %>" alt="Top Artist Image">
+                    <p><%= top_song.name %></p>
+                    <p><%= top_song.artists.name %> </p>
+                </div>
+            <% }); %>
+        </div>
+
+    </section>
+
+    <section class="just-space">
+
+    </section>
 
 <%- include("partials/footer") %>

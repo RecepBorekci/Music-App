@@ -5,7 +5,15 @@ body {
 
 h2 {
   color: white;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  color: white;
+}
+
+h6 {
+  margin-bottom: 0;
 }
 
 a {
@@ -386,6 +394,51 @@ a {
   height: 5vh;
   width: 5vh;
   z-index: 1;
+}
+
+/* HOME PAGE */
+
+#filter-options {
+  margin: 7rem 0 0 2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.relax-filter, .energize-filter, .workout-filter, .focus-filter, .commute-filter {
+  color: #dcdcdc;
+  background-color: #470da4;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.relax-filter {
+  margin-left: 0;
+}
+
+#user-top-songs, #user-top-artists {
+  padding: 2rem;
+}
+
+.top-artists, .top-songs {
+  display: flex;
+  flex-direction: row;
+}
+
+.top-artist-item, .top-song-item {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.top-artist-item img, .top-song-item img {
+  height: 200px;
+  width: 200px;
+}
+
+.just-space {
+  height: 500px;
 }
 
 
