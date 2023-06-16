@@ -19,11 +19,11 @@
     </section>
 
     <section id="user-top-artists"> 
-        <h4 class="top-artists-heading"> Your Favourite Artists </h4>
+        <h4 class="home-page-heading"> Your Favourite Artists </h4>
 
-        <div class="top-artists">
+        <div class="home-page-items">
             <% top_artists.forEach( function(top_artist) { %>
-                <div class="top-artist-item">
+                <div class="home-page-item">
                     <img src="<%= top_artist.images[0].url %>" alt="Top Artist Image">
                     <p><%= top_artist.name %></p>
                     <p><%= top_artist.followers.total %> Followers </p>
@@ -34,11 +34,11 @@
     </section>
 
     <section id="user-top-songs">
-        <h4  class="top-songs-heading"> Your Favourite Songs </h4>
+        <h4  class="home-page-heading"> Your Favourite Songs </h4>
         
-        <div class="top-songs">
+        <div class="home-page-items">
             <% top_songs.forEach( function(top_song) { %>
-                <div class="top-song-item">
+                <div class="home-page-item">
                     <img src="<%= top_song.album.images[0].url %>" alt="Top Artist Image">
                     <p><%= top_song.name %></p>
                     <p><%= top_song.artists.name %> </p>
@@ -49,11 +49,11 @@
     </section>
 
     <section id="artist-albums">
-        <h4  class="top-songs-heading"> Listen More Albums From <%= artist_albums[0].artists[0].name %> </h4>
+        <h4  class="home-page-heading"> Listen More Albums From <%= artist_albums[0].artists[0].name %> </h4>
         
-        <div class="top-songs">
+        <div class="home-page-items">
             <% artist_albums.forEach( function(artist_album) { %>
-                <div class="top-song-item">
+                <div class="home-page-item">
                     <img src="<%= artist_album.images[0].url %>" alt="Artist Album Image">
                     <p><%= artist_album.name %></p>
                     <p> by <%= artist_album.artists[0].name %> </p>
@@ -63,11 +63,11 @@
     </section>
 
     <section id="artist-top-songs">
-        <h4  class="top-songs-heading"> Listen More Songs From <%=artist_top_songs[0].artists[0].name%> </h4>
+        <h4  class="home-page-heading"> Listen More Songs From <%=artist_top_songs[0].artists[0].name%> </h4>
         
-        <div class="top-songs">
+        <div class="home-page-items">
             <% artist_top_songs.forEach( function(artist_top_song) { %>
-                <div class="top-song-item">
+                <div class="home-page-item">
                     <img src="<%= artist_top_song.album.images[0].url %>" alt="Artist Top Song Image">
                     <p><%= artist_top_song.name %></p>
                     <p> by <%= artist_top_song.artists[0].name %> </p>
@@ -77,11 +77,11 @@
     </section>
 
     <section id="related-artists">
-        <h4  class="top-songs-heading"> Similar to <%=artistToRelateTo.name%> </h4>
+        <h4  class="home-page-heading"> Similar to <%=artistToRelateTo.name%> </h4>
         
-        <div class="top-songs">
+        <div class="home-page-items">
             <% related_artists.forEach( function(related_artist) { %>
-                <div class="top-song-item">
+                <div class="home-page-item">
                     <img src="<%= related_artist.images[0].url %>" alt="Related Artist Image">
                     <p><%= related_artist.name %></p>
                     <p> <%= related_artist.followers.total %> Followers </p>

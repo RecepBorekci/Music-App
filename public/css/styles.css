@@ -420,19 +420,19 @@ a {
   padding: 2rem;
 }
 
-.top-artists, .top-songs {
+.home-page-items {
   display: flex;
   flex-direction: row;
 }
 
-.top-artist-item, .top-song-item {
+.home-page-item {
   color: white;
   display: flex;
   flex-direction: column;
   margin: 1rem;
 }
 
-.top-artist-item img, .top-song-item img {
+.home-page-item img {
   height: 200px;
   width: 200px;
 }
