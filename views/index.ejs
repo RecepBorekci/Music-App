@@ -48,6 +48,48 @@
 
     </section>
 
+    <section id="artist-albums">
+        <h4  class="top-songs-heading"> Listen More Albums From <%= artist_albums[0].artists[0].name %> </h4>
+        
+        <div class="top-songs">
+            <% artist_albums.forEach( function(artist_album) { %>
+                <div class="top-song-item">
+                    <img src="<%= artist_album.images[0].url %>" alt="Artist Album Image">
+                    <p><%= artist_album.name %></p>
+                    <p> by <%= artist_album.artists[0].name %> </p>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <section id="artist-top-songs">
+        <h4  class="top-songs-heading"> Listen More Songs From <%=artist_top_songs[0].artists[0].name%> </h4>
+        
+        <div class="top-songs">
+            <% artist_top_songs.forEach( function(artist_top_song) { %>
+                <div class="top-song-item">
+                    <img src="<%= artist_top_song.album.images[0].url %>" alt="Artist Top Song Image">
+                    <p><%= artist_top_song.name %></p>
+                    <p> by <%= artist_top_song.artists[0].name %> </p>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <section id="related-artists">
+        <h4  class="top-songs-heading"> Similar to <%=artistToRelateTo.name%> </h4>
+        
+        <div class="top-songs">
+            <% related_artists.forEach( function(related_artist) { %>
+                <div class="top-song-item">
+                    <img src="<%= related_artist.images[0].url %>" alt="Related Artist Image">
+                    <p><%= related_artist.name %></p>
+                    <p> <%= related_artist.followers.total %> Followers </p>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
     <section class="just-space">
 
     </section>

@@ -49,22 +49,55 @@ let search_shows = [];
 let search_episodes = [];
 let search_audiobooks = [];
 
-const top_artists = [];
-const top_songs = [];
+// const top_artists = [];
+// const top_songs = [];
+// const artist_songs = [];
+// const artist_albums = [];
+// const related_artists = [];
 
 app.route("/").get(async function (req, res) {
-  const fetchedTopArtists = await fetchUserTopArtists();
-  const fetchedTopSongs = await fetchUserTopSongs();
 
-  if (top_artists.length === 0) {
-    top_artists.push(...fetchedTopArtists);
-  }
+  const artistAlbumsRandomNumber = Math.floor(Math.random() * 10);
+  const artistTopSongsRandomNumber = Math.floor(Math.random() * 10);
+  const artistRelatedArtistRandomNumber = Math.floor(Math.random() * 10);
 
-  if (top_songs.length === 0) {
-    top_songs.push(...fetchedTopSongs);
-  }
+  const top_artists = await fetchUserTopArtists();
+  const top_songs = await fetchUserTopSongs();
+  const artist_albums =  await fetchArtistAlbums(top_artists[artistAlbumsRandomNumber].id);
+  const artist_top_songs = await fetchArtistTopSongs(top_artists[artistTopSongsRandomNumber].id);
+  const related_artists =   await fetchArtistRelatedArtists(top_artists[artistRelatedArtistRandomNumber].id);
 
-  res.render("index", { is_playing: is_playing, top_artists: top_artists, top_songs: top_songs });
+  const artistToRelateTo = top_artists[artistRelatedArtistRandomNumber];
+
+  // const fetchedTopArtists = await fetchUserTopArtists();
+  // const fetchedTopSongs = await fetchUserTopSongs();
+
+  // if (top_artists.length === 0) {
+  //   top_artists.push(...fetchedTopArtists);
+  // }
+
+  // if (top_songs.length === 0) {
+  //   top_songs.push(...fetchedTopSongs);
+  // }
+
+  // TODO: Followers count work beautifully here. There's a bug in main screen that shows all followers as 0 fix it with this endpoint.
+  // await fetchArtist(fetchedTopArtists[0].id);
+
+  // await fetchArtistAlbums(fetchedTopArtists[artistAlbumsRandomNumber].id);
+
+  // await fetchArtistTopSongs(fetchedTopArtists[artistTopSongsRandomNumber].id);
+
+  // await fetchArtistRelatedArtists(fetchedTopArtists[artistRelatedArtistRandomNumber].id);
+
+  res.render("index", {
+     is_playing: is_playing, 
+     top_artists: top_artists, 
+     top_songs: top_songs, 
+     artist_albums: artist_albums, 
+     artist_top_songs: artist_top_songs, 
+     related_artists: related_artists, 
+     artistToRelateTo: artistToRelateTo
+    });
 });
 
 app.get("/login", function (req, res) {
@@ -100,9 +133,7 @@ app.get("/profile", function profile(req, res) {
       username: user.display_name,
       email: user.email,
       followers: user.followers.total,
-      is_playing: is_playing,
-      top_artists: top_artists,
-      top_songs: top_songs
+      is_playing: is_playing
     });
   } catch (error) {
     console.log("Cannot go to profile page. Redirecting to login page.");
@@ -390,6 +421,26 @@ async function fetchData() {
     });
 }
 
+async function fetchMarkets() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/markets`, {
+    headers: headers,
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
 async function fetchUserTopArtists() {
 
   const { access_token, token_type } = token_response;
@@ -439,6 +490,107 @@ async function fetchUserTopSongs() {
     console.log(response.data.href);
 
     return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchArtist(artist_id) {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/artists/${artist_id}`, {
+    headers: headers,
+  })
+  .then((response) => {
+
+    // TODO: Followers count work beautifully here. There's a bug in main screen that shows all followers as 0 fix it with this endpoint.
+    console.log("followers count: " + response.data.followers.total);
+
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchArtistAlbums(artist_id) {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/artists/${artist_id}/albums`, {
+    headers: headers,
+    params: {
+      limit: 10,
+    },
+  })
+  .then((response) => {
+
+    console.log(response.data.items[0].uri);
+
+    return response.data.items;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchArtistTopSongs(artist_id) {
+
+  const { access_token, token_type } = token_response;
+
+  const markets = await fetchMarkets();
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/artists/${artist_id}/top-tracks`, {
+    headers: headers,
+    params: {
+      market: "TR"
+    }
+  })
+  .then((response) => {
+
+    console.log(response.data.tracks[0].name);
+
+    return response.data.tracks;
+  })
+  .catch((error) => {
+    throw error;
+  });
+} 
+
+async function fetchArtistRelatedArtists(artist_id) {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  return axios
+  .get(`https://api.spotify.com/v1/artists/${artist_id}/related-artists`, {
+    headers: headers,
+  })
+  .then((response) => {
+
+    console.log(response.data.artists[0].name);
+
+    return response.data.artists;
   })
   .catch((error) => {
     throw error;

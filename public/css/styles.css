@@ -416,7 +416,7 @@ a {
   margin-left: 0;
 }
 
-#user-top-songs, #user-top-artists {
+#user-top-songs, #user-top-artists, #artist-albums, #artist-top-songs, #related-artists {
   padding: 2rem;
 }
 
