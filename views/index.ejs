@@ -27,6 +27,18 @@
                     <img src="<%= top_artist.images[0].url %>" alt="Top Artist Image">
                     <p><%= top_artist.name %></p>
                     <p><%= top_artist.followers.total %> Followers </p>
+                    <form action="/playHome" method="post">
+                        <input type="hidden" name="artist_uri" value="<%= top_artist.uri %>">
+                        <button class="home-page-item-button" type="submit">
+                            <div>
+                              <% if (is_playing) { %>
+                                <i class="fa-solid fa-pause"></i>
+                              <% } else { %>
+                                <i class="fa-solid fa-play"></i>
+                              <% } %>
+                            </div>
+                          </button>
+                    </form>
                 </div>
             <% }); %>
         </div>
@@ -42,6 +54,18 @@
                     <img src="<%= top_song.album.images[0].url %>" alt="Top Artist Image">
                     <p><%= top_song.name %></p>
                     <p><%= top_song.artists.name %> </p>
+                    <form action="/playHome" method="post">
+                        <input type="hidden" name="song_uri" value="<%= top_song.uri %>">
+                        <button class="home-page-item-button" type="submit">
+                            <div>
+                              <% if (is_playing) { %>
+                                <i class="fa-solid fa-pause"></i>
+                              <% } else { %>
+                                <i class="fa-solid fa-play"></i>
+                              <% } %>
+                            </div>
+                          </button>
+                    </form>
                 </div>
             <% }); %>
         </div>
@@ -57,6 +81,18 @@
                     <img src="<%= artist_album.images[0].url %>" alt="Artist Album Image">
                     <p><%= artist_album.name %></p>
                     <p> by <%= artist_album.artists[0].name %> </p>
+                    <form action="/playHome" method="post">
+                        <input type="hidden" name="album_uri" value="<%= artist_album.uri %>">
+                        <button class="home-page-item-button" type="submit">
+                            <div>
+                              <% if (is_playing) { %>
+                                <i class="fa-solid fa-pause"></i>
+                              <% } else { %>
+                                <i class="fa-solid fa-play"></i>
+                              <% } %>
+                            </div>
+                          </button>
+                    </form>
                 </div>
             <% }); %>
         </div>
@@ -71,6 +107,18 @@
                     <img src="<%= artist_top_song.album.images[0].url %>" alt="Artist Top Song Image">
                     <p><%= artist_top_song.name %></p>
                     <p> by <%= artist_top_song.artists[0].name %> </p>
+                    <form action="/playHome" method="post">
+                        <input type="hidden" name="song_uri" value="<%= artist_top_song.uri %>">
+                        <button class="home-page-item-button" type="submit">
+                            <div>
+                              <% if (is_playing) { %>
+                                <i class="fa-solid fa-pause"></i>
+                              <% } else { %>
+                                <i class="fa-solid fa-play"></i>
+                              <% } %>
+                            </div>
+                          </button>
+                    </form>
                 </div>
             <% }); %>
         </div>
@@ -85,6 +133,18 @@
                     <img src="<%= related_artist.images[0].url %>" alt="Related Artist Image">
                     <p><%= related_artist.name %></p>
                     <p> <%= related_artist.followers.total %> Followers </p>
+                    <form action="/playHome" method="post">
+                        <input type="hidden" name="artist_uri" value="<%= related_artist.uri %>">
+                        <button class="home-page-item-button" type="submit">
+                            <div>
+                              <% if (is_playing) { %>
+                                <i class="fa-solid fa-pause"></i>
+                              <% } else { %>
+                                <i class="fa-solid fa-play"></i>
+                              <% } %>
+                            </div>
+                          </button>
+                    </form>
                 </div>
             <% }); %>
         </div>
