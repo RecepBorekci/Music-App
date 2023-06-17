@@ -28,10 +28,11 @@
                     <p><%= top_artist.name %></p>
                     <p><%= top_artist.followers.total %> Followers </p>
                     <form action="/playHome" method="post">
+                        <input type="hidden" name="currentlyPlayingId" value="<%= top_artist.id %>">
                         <input type="hidden" name="artist_uri" value="<%= top_artist.uri %>">
                         <button class="home-page-item-button" type="submit">
                             <div>
-                              <% if (is_playing) { %>
+                              <% if (is_playing && currently_playing_id === top_artist.id) { %>
                                 <i class="fa-solid fa-pause"></i>
                               <% } else { %>
                                 <i class="fa-solid fa-play"></i>
@@ -55,10 +56,11 @@
                     <p><%= top_song.name %></p>
                     <p><%= top_song.artists.name %> </p>
                     <form action="/playHome" method="post">
+                        <input type="hidden" name="currentlyPlayingId" value="<%= top_song.id %>">
                         <input type="hidden" name="song_uri" value="<%= top_song.uri %>">
                         <button class="home-page-item-button" type="submit">
                             <div>
-                              <% if (is_playing) { %>
+                              <% if (is_playing && currently_playing_id === top_song.id) { %>
                                 <i class="fa-solid fa-pause"></i>
                               <% } else { %>
                                 <i class="fa-solid fa-play"></i>
@@ -82,10 +84,11 @@
                     <p><%= artist_album.name %></p>
                     <p> by <%= artist_album.artists[0].name %> </p>
                     <form action="/playHome" method="post">
+                        <input type="hidden" name="currentlyPlayingId" value="<%= artist_album.id %>">
                         <input type="hidden" name="album_uri" value="<%= artist_album.uri %>">
                         <button class="home-page-item-button" type="submit">
                             <div>
-                              <% if (is_playing) { %>
+                              <% if (is_playing && currently_playing_id === artist_album.id) { %>
                                 <i class="fa-solid fa-pause"></i>
                               <% } else { %>
                                 <i class="fa-solid fa-play"></i>
@@ -108,10 +111,11 @@
                     <p><%= artist_top_song.name %></p>
                     <p> by <%= artist_top_song.artists[0].name %> </p>
                     <form action="/playHome" method="post">
+                        <input type="hidden" name="currentlyPlayingId" value="<%= artist_top_song.id %>">
                         <input type="hidden" name="song_uri" value="<%= artist_top_song.uri %>">
                         <button class="home-page-item-button" type="submit">
                             <div>
-                              <% if (is_playing) { %>
+                              <% if (is_playing && currently_playing_id === artist_top_song.id) { %>
                                 <i class="fa-solid fa-pause"></i>
                               <% } else { %>
                                 <i class="fa-solid fa-play"></i>
@@ -134,10 +138,11 @@
                     <p><%= related_artist.name %></p>
                     <p> <%= related_artist.followers.total %> Followers </p>
                     <form action="/playHome" method="post">
+                        <input type="hidden" name="currentlyPlayingId" value="<%= related_artist.id %>">
                         <input type="hidden" name="artist_uri" value="<%= related_artist.uri %>">
                         <button class="home-page-item-button" type="submit">
                             <div>
-                              <% if (is_playing) { %>
+                              <% if (is_playing && currently_playing_id === related_artist.id) { %>
                                 <i class="fa-solid fa-pause"></i>
                               <% } else { %>
                                 <i class="fa-solid fa-play"></i>
