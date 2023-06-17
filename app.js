@@ -21,7 +21,7 @@ const client_id = "30d5140203ce42c88337910fc2b6aef1";
 const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
 const redirect_uri = "http://localhost:3000/callback";
 const stateKey = "spotify_auth_state";
-var back_url = "/";
+var back_url = "";
 let access_token = "";
 let token_type = "";
 let token_response = {};
@@ -104,7 +104,9 @@ app.route("/").get(async function (req, res) {
 app.get("/login", function (req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read";
+  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read user-follow-read";
+
+  console.log(redirect_uri);
 
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
@@ -120,12 +122,21 @@ app.get("/login", function (req, res) {
 
 app.get("/callback", function (req, res) {
   code = req.query.code || null;
-  fetchData();
+  fetchUserPlaylists();
+
+  back_url = "/profile";
+
+  console.log(back_url);
+
   res.redirect(back_url);
 });
 
 app.get("/profile", function profile(req, res) {
   try {
+
+    let followedCount = 0;
+    let followedArtists = [];
+
     res.render("profile.ejs", {
       profilePicture:
         user.images.length != 0
@@ -134,8 +145,19 @@ app.get("/profile", function profile(req, res) {
       username: user.display_name,
       email: user.email,
       followers: user.followers.total,
-      is_playing: is_playing
+      is_playing: is_playing,
+      followed_count: followedCount,
+      followed_artists: followedArtists
     });
+
+    // fetchFollowedArtists().then((response) => {
+    //   followedCount = response.total;
+    //   followedArtists = response.items;
+
+    //   console.log(followedCount);
+    //   console.log(followedArtists);
+    // });
+
   } catch (error) {
     console.log("Cannot go to profile page. Redirecting to login page.");
     back_url = "/profile";
@@ -388,66 +410,67 @@ async function fetchToken() {
   });
 }
 
-// Gets the data for the playlist and playlist songs
-async function fetchData() {
-  fetchToken()
-    .then(async (response) => {
-      if (response.status === 200) {
+async function fetchUser() {
+  const { access_token, token_type } = token_response;
 
-        token_response = response.data;
-
-        const { access_token, token_type } = token_response;
-        axios
-          .get("https://api.spotify.com/v1/me", {
-            headers: {
-              Authorization: `${token_type} ${access_token}`,
-            },
-          })
-          .then(async (response) => {
-            //user = `${JSON.stringify(response.data, null, 2)}`;
-            user = response.data;
-            userId = user.id;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        axios
-          .get(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-            headers: {
-              Authorization: `${token_type} ${access_token}`,
-            },
-            params: {
-              limit: 50,
-            },
-          })
-          .then((response) => {
-            playlists = response.data;
-            let playlist_songs_href = response.data.items[1].tracks.href; // First playlist songs.
-
-            playlist_id = playlists.items[0].id;
-
-            let first_playlist_uri = response.data.items[0].uri
-
-            console.log("This is the uri: " + first_playlist_uri);
-
-            // playSong();
-
-            // console.log("THE PLAYLIST ID: " + playlist_id);
-            // console.log("href from playslist: " + playlist_songs_href);
-            // console.log(playlists.items);
-
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        console.log(response);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const response = await axios.get("https://api.spotify.com/v1/me", {
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+      },
     });
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 }
+
+async function fetchPlaylists(user) {
+  try {
+
+    const { access_token, token_type } = token_response;
+
+    const response = await axios.get(
+      `https://api.spotify.com/v1/users/${user.id}/playlists`,
+      {
+        headers: {
+          Authorization: `${token_type} ${access_token}`,
+        },
+        params: {
+          limit: 50,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Failed to fetch playlists');
+  }
+}
+
+
+// Gets the data for the playlist and playlist songs
+async function fetchUserPlaylists() {
+  try {
+    const response = await fetchToken();
+
+    if (response.status === 200) {
+      token_response = response.data;
+
+      user = await fetchUser();
+
+      playlists = await fetchPlaylists(user);
+
+    } else {
+      console.log(response);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 async function fetchMarkets() {
 
@@ -1111,6 +1134,27 @@ async function search(query) {
   } catch (error) {
     console.error(error);
   }
+}
+
+
+function fetchFollowedArtists() {
+  return new Promise((resolve, reject) => {
+    const { access_token, token_type } = token_response;
+
+    const headers = {
+      Authorization: `${token_type} ${access_token}`,
+    };
+
+    axios
+      .get('https://api.spotify.com/v1/me/following?type=artist', { headers: headers })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject(error);
+      });
+  });
 }
 
 
