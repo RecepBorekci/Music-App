@@ -426,13 +426,18 @@ a {
 }
 
 .home-page-item {
+  background-color: #3e049b;
   color: white;
   display: flex;
   flex-direction: column;
   margin: 1rem;
+  padding: 1rem;
+  border-radius: 2rem;
 }
 
 .home-page-item img {
+  border-radius: 2rem 2rem 0 0;
+  margin-bottom: 1.5rem;
   height: 200px;
   width: 200px;
 }
