@@ -44,6 +44,29 @@
 </section>
 
 <section class="followed-artists">
+  <h2>Followed Artists, Total <%=followed_count%></h2>
+  <div class="home-page-items">
+  <% followed_artists.forEach( function(followed_artist) { %>
+    <div class="home-page-item">
+        <img src="<%= followed_artist.images[0].url %>" alt="Followed Artist Image">
+        <p><%= followed_artist.name %></p>
+        <p><%= followed_artist.genres %></p>
+        <form action="/playProfile" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%= followed_artist.id %>">
+            <input type="hidden" name="album_uri" value="<%= followed_artist.uri %>">
+            <button class="home-page-item-button" type="submit">
+                <div>
+                  <% if (is_playing && currently_playing_id === followed_artist.id) { %>
+                    <i class="fa-solid fa-pause"></i>
+                  <% } else { %>
+                    <i class="fa-solid fa-play"></i>
+                  <% } %>
+                </div>
+              </button>
+        </form>
+    </div>
+<% }); %>
+</div>
 
 </section>
 
@@ -53,6 +76,10 @@
 
 <section class="saved-songs">
   
+</section>
+
+<section class="just-space">
+
 </section>
 
 

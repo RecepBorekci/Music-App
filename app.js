@@ -21,7 +21,7 @@ const client_id = "30d5140203ce42c88337910fc2b6aef1";
 const client_secret = "b214294c05ef41debf2ba2f0cbc8b8c7";
 const redirect_uri = "http://localhost:3000/callback";
 const stateKey = "spotify_auth_state";
-var back_url = "";
+var back_url = "/";
 let access_token = "";
 let token_type = "";
 let token_response = {};
@@ -131,11 +131,15 @@ app.get("/callback", function (req, res) {
   res.redirect(back_url);
 });
 
-app.get("/profile", function profile(req, res) {
+app.get("/profile", async function profile(req, res) {
   try {
 
-    let followedCount = 0;
-    let followedArtists = [];
+    const response = await fetchFollowedArtists();
+    const followedCount = response.artists.total;
+    const followedArtists = response.artists.items;
+  
+    console.log(followedCount);
+    console.log(followedArtists[0]);
 
     res.render("profile.ejs", {
       profilePicture:
@@ -149,14 +153,6 @@ app.get("/profile", function profile(req, res) {
       followed_count: followedCount,
       followed_artists: followedArtists
     });
-
-    // fetchFollowedArtists().then((response) => {
-    //   followedCount = response.total;
-    //   followedArtists = response.items;
-
-    //   console.log(followedCount);
-    //   console.log(followedArtists);
-    // });
 
   } catch (error) {
     console.log("Cannot go to profile page. Redirecting to login page.");
@@ -355,6 +351,32 @@ app.route("/playHome")
   }
 
   res.redirect("/");
+
+});
+
+app.route("/playProfile")
+.post(async function(req, res) {
+
+  const artist_uri = req.body.artist_uri;
+  const song_uri = req.body.song_uri;
+  const album_uri = req.body.album_uri;
+  const clickedItemID = req.body.currentlyPlayingId;
+
+      // Check if the clicked item is the currently playing item
+      const isCurrentlyPlaying = currentlyPlayingID === clickedItemID;
+
+  if (album_uri) {
+    playAlbum(album_uri);
+    currentlyPlayingID = clickedItemID;
+  } else if (artist_uri) {
+    playArtist(artist_uri);
+    currentlyPlayingID = clickedItemID;
+  } else if (song_uri) {
+    playSingleSong(song_uri);
+    currentlyPlayingID = clickedItemID;
+  }
+
+  res.redirect("/profile");
 
 });
 
@@ -1137,24 +1159,32 @@ async function search(query) {
 }
 
 
-function fetchFollowedArtists() {
-  return new Promise((resolve, reject) => {
-    const { access_token, token_type } = token_response;
+async function fetchFollowedArtists() {
 
-    const headers = {
-      Authorization: `${token_type} ${access_token}`,
-    };
+  const { access_token, token_type } = token_response;
 
-    axios
-      .get('https://api.spotify.com/v1/me/following?type=artist', { headers: headers })
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-        reject(error);
-      });
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+    limit: 5
+  };
+
+  const params = {
+    type: 'artist',
+    limit: 5
+  }
+
+  return axios.get(`https://api.spotify.com/v1/me/following`, {
+    headers: headers,
+    params: params,
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
   });
+
+
 }
 
 
