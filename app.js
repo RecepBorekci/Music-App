@@ -138,9 +138,6 @@ app.get("/profile", async function profile(req, res) {
     const followedCount = response.artists.total;
     const followedArtists = response.artists.items;
 
-    console.log(followedCount);
-    console.log(followedArtists[0]);
-
     const savedSongResponse = await fetchSavedSongs();
     const savedAlbumResponse = await fetchSavedAlbums();
 
@@ -149,6 +146,8 @@ app.get("/profile", async function profile(req, res) {
 
     const savedSongCount = savedSongResponse.total;
     const savedSongs = savedSongResponse.items;
+
+    await isPlaying();
 
     res.render("profile.ejs", {
       profilePicture:
@@ -159,7 +158,7 @@ app.get("/profile", async function profile(req, res) {
       email: user.email,
       followers: user.followers.total,
       is_playing: is_playing,
-      currently_playing_id: currentPlaylistID,
+      currently_playing_id: currentlyPlayingID,
       followed_count: followedCount,
       followed_artists: followedArtists,
       saved_album_count: savedAlbumCount,
@@ -203,8 +202,6 @@ app.route("/playlist")
       currentPlaylistURI = clickedPlaylistURI;
       await playPlaylistSongs(currentPlaylistURI);
     }
-
-    await isPlaying();
 
     res.redirect("/playlist");
   });
@@ -781,10 +778,6 @@ async function isPlaying() {
   })
   .then((response) => {
     is_playing = response.data.is_playing;
-
-    console.log("Is playing is: " + is_playing); 
-
-    return response.data.is_playing;
   })
   .catch((error) => {
     throw error;

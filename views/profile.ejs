@@ -83,7 +83,7 @@
             <input type="hidden" name="album_uri" value="<%= saved_album.album.uri %>">
             <button class="home-page-item-button" type="submit">
                 <div>
-                  <% if (is_playing && currently_playing_id === saved_album.id) { %>
+                  <% if (is_playing && currently_playing_id === saved_album.album.id) { %>
                     <i class="fa-solid fa-pause"></i>
                   <% } else { %>
                     <i class="fa-solid fa-play"></i>
@@ -109,7 +109,7 @@
             <input type="hidden" name="song_uri" value="<%= saved_song.track.uri %>">
             <button class="home-page-item-button" type="submit">
                 <div>
-                  <% if (is_playing && currently_playing_id === saved_song.id) { %>
+                  <% if (is_playing && currently_playing_id === saved_song.track.id) { %>
                     <i class="fa-solid fa-pause"></i>
                   <% } else { %>
                     <i class="fa-solid fa-play"></i>
