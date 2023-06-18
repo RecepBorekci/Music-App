@@ -71,11 +71,55 @@
 </section>
 
 <section class="saved-albums">
-  
+  <h2>Saved Albums, Total <%=saved_album_count%></h2>
+  <div class="home-page-items">
+  <% saved_albums.forEach( function(saved_album) { %>
+    <div class="home-page-item">
+      <img src="<%= saved_album.album.images[0].url %>" alt="Saved Album Image">
+        <p><%= saved_album.album.name %></p>
+        <p><%= saved_album.album.genres %></p>
+        <form action="/playProfile" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%= saved_album.album.id %>">
+            <input type="hidden" name="album_uri" value="<%= saved_album.album.uri %>">
+            <button class="home-page-item-button" type="submit">
+                <div>
+                  <% if (is_playing && currently_playing_id === saved_album.id) { %>
+                    <i class="fa-solid fa-pause"></i>
+                  <% } else { %>
+                    <i class="fa-solid fa-play"></i>
+                  <% } %>
+                </div>
+              </button>
+        </form>
+    </div>
+<% }); %>
+</div>
 </section>
 
 <section class="saved-songs">
-  
+  <h2>Saved Songs, Total <%=saved_song_count%></h2>
+  <div class="home-page-items">
+  <% saved_songs.forEach( function(saved_song) { %>
+    <div class="home-page-item">
+        <img src="<%= saved_song.track.album.images[0].url %>" alt="Saved Song Image">
+        <p><%= saved_song.track.name %></p>
+        <p><%= saved_song.track.artists.name %></p>
+        <form action="/playProfile" method="post">
+            <input type="hidden" name="currentlyPlayingId" value="<%= saved_song.track.id %>">
+            <input type="hidden" name="song_uri" value="<%= saved_song.track.uri %>">
+            <button class="home-page-item-button" type="submit">
+                <div>
+                  <% if (is_playing && currently_playing_id === saved_song.id) { %>
+                    <i class="fa-solid fa-pause"></i>
+                  <% } else { %>
+                    <i class="fa-solid fa-play"></i>
+                  <% } %>
+                </div>
+              </button>
+        </form>
+    </div>
+<% }); %>
+</div>
 </section>
 
 <section class="just-space">

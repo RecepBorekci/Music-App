@@ -104,7 +104,7 @@ app.route("/").get(async function (req, res) {
 app.get("/login", function (req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read user-follow-read";
+  var scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-read-playback-state user-modify-playback-state user-read-currently-playing user-top-read user-follow-read user-library-read";
 
   console.log(redirect_uri);
 
@@ -137,9 +137,18 @@ app.get("/profile", async function profile(req, res) {
     const response = await fetchFollowedArtists();
     const followedCount = response.artists.total;
     const followedArtists = response.artists.items;
-  
+
     console.log(followedCount);
     console.log(followedArtists[0]);
+
+    const savedSongResponse = await fetchSavedSongs();
+    const savedAlbumResponse = await fetchSavedAlbums();
+
+    const savedAlbumCount = savedAlbumResponse.total;
+    const savedAlbums = savedAlbumResponse.items;
+
+    const savedSongCount = savedSongResponse.total;
+    const savedSongs = savedSongResponse.items;
 
     res.render("profile.ejs", {
       profilePicture:
@@ -150,8 +159,13 @@ app.get("/profile", async function profile(req, res) {
       email: user.email,
       followers: user.followers.total,
       is_playing: is_playing,
+      currently_playing_id: currentPlaylistID,
       followed_count: followedCount,
-      followed_artists: followedArtists
+      followed_artists: followedArtists,
+      saved_album_count: savedAlbumCount,
+      saved_albums: savedAlbums,
+      saved_song_count: savedSongCount,
+      saved_songs: savedSongs
     });
 
   } catch (error) {
@@ -1165,7 +1179,6 @@ async function fetchFollowedArtists() {
 
   const headers = {
     Authorization: `${token_type} ${access_token}`,
-    limit: 5
   };
 
   const params = {
@@ -1174,6 +1187,57 @@ async function fetchFollowedArtists() {
   }
 
   return axios.get(`https://api.spotify.com/v1/me/following`, {
+    headers: headers,
+    params: params,
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+
+}
+
+async function fetchSavedAlbums() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const params = {
+    limit: 5
+  }
+
+  return axios.get(`https://api.spotify.com/v1/me/albums`, {
+    headers: headers,
+    params: params,
+  })
+  .then((response) => {
+    return response.data;
+  })
+  .catch((error) => {
+    throw error;
+  });
+
+}
+
+async function fetchSavedSongs() {
+
+  const { access_token, token_type } = token_response;
+
+  const headers = {
+    Authorization: `${token_type} ${access_token}`,
+  };
+
+  const params = {
+    limit: 5
+  }
+
+  return axios.get(`https://api.spotify.com/v1/me/tracks`, {
     headers: headers,
     params: params,
   })
