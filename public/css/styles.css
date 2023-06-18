@@ -18,6 +18,7 @@ h6 {
 
 a {
   text-decoration-color: transparent;
+  color: white;
 }
 
 .bg-body-tertiary {
@@ -465,6 +466,92 @@ a {
   height: 500px;
 }
 
+/*Artist Page*/
+
+#artist-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+}
+
+.artist-image {
+  width: 60%;
+  padding-bottom: 1rem;
+}
+
+#top-songs, #albums, #similar-artists{
+  padding: 3rem;
+  color: white;
+}
+
+.top-song-item {
+  display: flex;
+  justify-content: space-around;
+  background-color: #300772;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+}
+
+.top-song-item p {
+  margin: 0;
+}
+
+.top-song-img {
+  width: 100px;
+  height: 100px;
+}
+
+.top-song-name {
+  display: flex;
+  align-items: center;
+}
+
+.song-detail {
+  display: flex;
+  align-items: center;
+}
+
+.artist-page-items {
+  display: flex;
+  flex-direction: row;
+}
+
+.artist-page-item {
+  background-color: #3e049b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 2rem;
+}
+
+.artist-page-item img {
+  border-radius: 2rem 2rem 0 0;
+  margin-bottom: 1.5rem;
+  height: 200px;
+  width: 200px;
+}
+
+.artist-page-item-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artist-page-item-button {
+  background-color: #300772;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  height: 5vh;
+  width: 5vh;
+}
 
 /*& PHONE SIZE  */
 

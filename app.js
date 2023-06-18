@@ -284,6 +284,26 @@ app.route("/search")
 
 });
 
+app.route("/artist/:artistID")
+.get(async function(req, res) {
+
+  let artistID = req.params.artistID;
+
+  const artist = await fetchArtist(artistID);
+  const artist_top_songs = await fetchArtistTopSongs(artistID);
+  const artist_albums = await fetchArtistAlbums(artistID);
+  const artist_similar_artists = await fetchArtistRelatedArtists(artistID);
+
+
+  res.render("artist_page", {
+    is_playing: is_playing,
+    artist: artist,
+    artist_top_songs: artist_top_songs,
+    artist_albums: artist_albums,
+    artist_similar_artists: artist_similar_artists
+  });
+})
+
 app.route("/play")
   .post(async function (req, res) {
     const songURI = req.body.playSongButton;

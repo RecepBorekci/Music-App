@@ -1,0 +1,90 @@
+<%- include("partials/header") %>
+
+<section id="artist-image">
+    <img src="<%=artist.images[0].url%>" alt="Artist Image" class="artist-image">
+    <h2 class="artist-name"><%=artist.name%></h2>
+</section>
+
+<section id="top-songs">
+    <h2>Top Songs</h2>
+
+    <% artist_top_songs.forEach(function(artist_top_song) { %>
+        <div class="top-song-item">
+            <img src="<%= artist_top_song.album.images[0].url %>" alt="Artist Top Song Image" class="top-song-img">
+            <p class="top-song-name"> <%= artist_top_song.name %></p>
+            <p class="song-detail"> <%= artist_top_song.album.name %></p>
+            <p class="song-detail"> <%= artist_top_song.duration_ms / 1000 %></p>
+            <form action="/playArtistItem" method="post" class="artist-page-item-form">
+                <input type="hidden" name="currentlyPlayingId" value="<%=artist_top_song.id%>">
+                <input type="hidden" name="album_uri" value="<%=artist_top_song.uri%>">
+                <button class="artist-page-item-button" type="submit">
+                    <% if (is_playing) { %>
+                        <i class="fa-solid fa-pause"></i>
+                      <% } else { %>
+                        <i class="fa-solid fa-play"></i>
+                      <% } %>
+                  </button>
+            </form>
+        </div>
+    <% }); %>
+
+</section>
+
+<section id="albums">
+    <h2>Albums</h2>
+
+    <div class="artist-page-items">
+        <% artist_albums.forEach(function(artist_album) { %>
+            <div class="artist-page-item">
+                <img src="<%=artist_album.images[0].url%>" alt="Album Item Image">
+                <p> <%=artist_album.name%> </p>
+                <p> <%=artist_album.type%> </p>
+                <form action="/playArtistItem" method="post">
+                    <input type="hidden" name="currentlyPlayingId" value="<%=artist_album.id%>">
+                    <input type="hidden" name="album_uri" value="<%=artist_album.uri%>">
+                    <button class="artist-page-item-button" type="submit">
+                        <% if (is_playing) { %>
+                            <i class="fa-solid fa-pause"></i>
+                          <% } else { %>
+                            <i class="fa-solid fa-play"></i>
+                          <% } %>
+                      </button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
+
+</section>
+
+<section id="similar-artists">
+    <h2>You may also like</h2>
+
+    <div class="artist-page-items">
+        <% artist_similar_artists.forEach(function(artist_similar_artist) { %>
+            <div class="artist-page-item">
+                <img src="<%=artist_similar_artist.images[0].url%>" alt="Album Item Image">
+                <p> <%=artist_similar_artist.name%> </p>
+                <p> <%=artist_similar_artist.followers.total%> Followers </p>
+                <form action="/playArtistItem" method="post">
+                    <input type="hidden" name="currentlyPlayingId" value="<%=artist_similar_artist.id%>">
+                    <input type="hidden" name="artist_uri" value="<%=artist_similar_artist.uri%>">
+                    <button class="artist-page-item-button" type="submit">
+                        <% if (is_playing) { %>
+                            <i class="fa-solid fa-pause"></i>
+                          <% } else { %>
+                            <i class="fa-solid fa-play"></i>
+                          <% } %>
+                      </button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
+
+</section>
+
+<section class="just-space">
+
+</section>
+
+
+<%- include("partials/footer", { is_playing: is_playing }) %>

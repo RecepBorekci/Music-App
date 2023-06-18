@@ -48,6 +48,7 @@
   <div class="home-page-items">
   <% followed_artists.forEach( function(followed_artist) { %>
     <div class="home-page-item">
+      <a href="/artist/<%=followed_artist.id%>">
         <img src="<%= followed_artist.images[0].url %>" alt="Followed Artist Image">
         <p><%= followed_artist.name %></p>
         <p><%= followed_artist.genres %></p>
@@ -64,6 +65,7 @@
                 </div>
               </button>
         </form>
+      </a>
     </div>
 <% }); %>
 </div>

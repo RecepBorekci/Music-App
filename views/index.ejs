@@ -24,6 +24,8 @@
         <div class="home-page-items">
             <% top_artists.forEach( function(top_artist) { %>
                 <div class="home-page-item">
+
+                  <a href="/artist/<%=top_artist.id%>">
                     <img src="<%= top_artist.images[0].url %>" alt="Top Artist Image">
                     <p><%= top_artist.name %></p>
                     <p><%= top_artist.followers.total %> Followers </p>
@@ -40,6 +42,8 @@
                             </div>
                           </button>
                     </form>
+                  </a>
+
                 </div>
             <% }); %>
         </div>
@@ -134,6 +138,8 @@
         <div class="home-page-items">
             <% related_artists.forEach( function(related_artist) { %>
                 <div class="home-page-item">
+
+                  <a href="/artist/<%=related_artist.id%>">
                     <img src="<%= related_artist.images[0].url %>" alt="Related Artist Image">
                     <p><%= related_artist.name %></p>
                     <p> <%= related_artist.followers.total %> Followers </p>
@@ -150,6 +156,8 @@
                             </div>
                           </button>
                     </form>
+                  </a>
+
                 </div>
             <% }); %>
         </div>
